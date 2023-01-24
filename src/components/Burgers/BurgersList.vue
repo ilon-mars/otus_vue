@@ -143,6 +143,9 @@ const deleteBurger = async (burgerId: string) => {
   &:hover
     background-color: #ff1128
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a5cb148 (add: style for burgers ingredients)
 
 .list
   display: flex
@@ -154,6 +157,9 @@ const deleteBurger = async (burgerId: string) => {
 
     &:not(:last-of-type)
       margin-right: 5px
+<<<<<<< HEAD
 =======
 >>>>>>> 1c69393 (add: delete burger)
+=======
+>>>>>>> a5cb148 (add: style for burgers ingredients)
 </style>
