@@ -1,0 +1,67 @@
+<script setup lang="ts">
+import { watch } from 'vue';
+import CloseIcon from '@/components/icons/CloseIcon.vue';
+
+const props = defineProps<{
+  isOpen: boolean;
+}>();
+
+const emit = defineEmits<{
+  (e: 'close'): void;
+}>();
+
+watch(
+  () => props.isOpen,
+  async () => {
+    if (props.isOpen) {
+      document.body.classList.add('noscroll');
+    } else {
+      document.body.classList.remove('noscroll');
+    }
+  },
+  { immediate: true }
+);
+</script>
+
+<template>
+  <Teleport to="#app">
+    <div v-if="props.isOpen" :class="$style.modal">
+      <div :class="$style.slot">
+        <slot />
+      </div>
+
+      <button @click="emit('close')" :class="$style.closeBtn">
+        <CloseIcon />
+      </button>
+    </div>
+  </Teleport>
+</template>
+
+<style module lang="sass">
+.modal
+  padding: 20px
+  position: fixed
+  z-index: 10
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(1, 1, 1, 0.8)
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  backdrop-filter: blur(10px)
+
+.closeBtn
+    position: absolute
+    top: 20px
+    right: 20px
+    width: 24px
+    height: 24px
+    cursor: pointer
+
+.slot
+  max-width: 600px
+  min-height: 400px
+</style>

@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;600&display=swap')
+
+@import '_reset'
+@import '_animations'
+
+body
+  background-color: #333
+  font-family: 'Montserrat', 'Arial', sans-serif
+  color: #ededed
+  font-size: 16px
+
+button
+  font: inherit
+  background-color: transparent
+  color: inherit
+
+svg
+  width: 100%
+  height: 100%
+  transition: fill 0.2s ease-in-out
+
+.noscroll
+  overflow: hidden
+
+.wrapper
+  max-width: 1200px
+  margin: 0 auto
+
+.h2
+  font-size: 1.5rem
+  font-weight: 600
+
+.h3
+  font-size: 1.25rem
+  font-weight: 200
+
+.add-button
+  cursor: pointer
+  transition: color 0.3s ease-in-out
+  position: relative
+  color: #111
+
+  &::before
+    content: ''
+    position: absolute
+    left: 0
+    bottom: -2px
+    width: 0
+    display: block
+    height: 1px
+    background-color: #999
+    transition: all 0.3s ease-in-out
+
+
+  &:hover
+    color: #999
+
+    &::before
+      width: 100%
