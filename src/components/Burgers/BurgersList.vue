@@ -142,6 +142,7 @@ const deleteBurger = async (burgerId: string) => {
 
   &:hover
     background-color: #ff1128
+<<<<<<< HEAD
 
 .list
   display: flex
@@ -153,4 +154,6 @@ const deleteBurger = async (burgerId: string) => {
 
     &:not(:last-of-type)
       margin-right: 5px
+=======
+>>>>>>> 1c69393 (add: delete burger)
 </style>
