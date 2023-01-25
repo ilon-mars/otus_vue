@@ -46,7 +46,7 @@ watch(
   left: 0
   right: 0
   bottom: 0
-  background-color: rgba(1, 1, 1, 0.8)
+  background-color: rgba($darkest-color, $opacity-s)
   display: flex
   flex-direction: column
   align-items: center

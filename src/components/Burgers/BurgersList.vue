@@ -70,6 +70,7 @@ const deleteBurger = async (burgerId: string) => {
 
 <style module lang="sass">
 @import '@/assets/_animations.sass'
+@import '@/assets/_functions.sass'
 
 .burger
   display: grid
@@ -82,7 +83,7 @@ const deleteBurger = async (burgerId: string) => {
   &:hover
     .deleteBtn
       display: block
-      animation: fadeIn 1s
+      animation: fadeIn 0.5s
 
 .title
   margin-bottom: 10px
@@ -121,31 +122,27 @@ const deleteBurger = async (burgerId: string) => {
     width: fit-content
     height: fit-content
     margin: auto auto
-    transition: color 0.2s ease-in-out
+    transition: color $transition-duration ease-in-out
     cursor: pointer
-    color: #111
+    color: $darkest-color
 
     &:hover
-      color: #999
+      color: $light-neutral-color
 
 .deleteBtn
-  background-color: crimson
+  background-color: $error-color
   padding: 5px
   position: absolute
   width: 125px
   height: 60px
   cursor: pointer
-  transition: background-color, opacity 0.2s ease-in-out
+  transition: background-color, opacity $transition-duration ease-in-out
   bottom: 10px
   left: 250px
   display: none
 
   &:hover
-    background-color: #ff1128
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> a5cb148 (add: style for burgers ingredients)
+    background-color: tint($error-color, 30%)
 
 .list
   display: flex
@@ -157,9 +154,4 @@ const deleteBurger = async (burgerId: string) => {
 
     &:not(:last-of-type)
       margin-right: 5px
-<<<<<<< HEAD
-=======
->>>>>>> 1c69393 (add: delete burger)
-=======
->>>>>>> a5cb148 (add: style for burgers ingredients)
 </style>

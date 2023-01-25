@@ -55,7 +55,7 @@
 
 <style module lang="sass">
 .svg
-  fill: limegreen
+  fill: $primary-color
 
 .steamL, .steamC
   stroke-dasharray: 13
