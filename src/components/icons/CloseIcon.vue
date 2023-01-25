@@ -20,5 +20,5 @@
 <style lang="sass" module>
 .svg
   &:hover
-    fill: #999
+    fill: $light-neutral-color
 </style>

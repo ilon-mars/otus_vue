@@ -64,10 +64,10 @@ const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === i
     width: fit-content
     height: fit-content
     margin: auto auto
-    transition: color 0.2s ease-in-out
+    transition: color $transition-duration ease-in-out
     cursor: pointer
-    color: #111
+    color: $darkest-color
 
     &:hover
-      color: #999
+      color: $light-neutral-color
 </style>

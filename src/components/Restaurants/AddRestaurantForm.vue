@@ -88,8 +88,8 @@ const onSubmit = async () => {
 
 .item
   padding: 5px
-  background-color: rgba(limegreen, 0.2)
-  border: 2px solid rgba(limegreen, 0.5)
+  background-color: rgba($primary-color, $opacity-l)
+  border: 2px solid rgba($primary-color, $opacity-m)
   margin-bottom: 5px
 
   &:not(:last-of-type)
@@ -97,13 +97,13 @@ const onSubmit = async () => {
 
 .addBtn
   padding: 10px 15px
-  background-color: rgba(limegreen, 0.2)
+  background-color: rgba($primary-color, $opacity-l)
   cursor: pointer
   border: 2px solid transparent
-  transition: border 0.2s ease-in-out
+  transition: border $transition-duration ease-in-out
 
   &:hover, &:active
-    border-color: rgba(limegreen, 0.5)
+    border-color: rgba($primary-color, $opacity-m)
 
 .search
   margin-bottom: 5px

@@ -71,7 +71,7 @@ const isSearchVisible = ref(false);
   right: 0
   width: 100%
   height: 100px
-  background-color: #333
+  background-color: $dark-color
   overflow-x: scroll
 
 .item
@@ -79,20 +79,20 @@ const isSearchVisible = ref(false);
 
   &:hover
     cursor: pointer
-    background-color: #555
+    background-color: $dark-neutral-color
 
 .wrapper
   display: flex
   flex-direction: column
 
 .input
-  background-color: #333
+  background-color: $dark-color
   border: none
   padding: 10px
-  color: #ededed
+  color: $light-color
 
   &:focus, &:active
-    outline: 1px solid rgba(limegreen, 0.5)
+    outline: 1px solid rgba($primary-color, $opacity-m)
 
 .label
   display: inline-block

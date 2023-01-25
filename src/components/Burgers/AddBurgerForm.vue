@@ -103,11 +103,11 @@ const onSubmit = async () => {
 
 .addBtn
   padding: 10px 15px
-  background-color: rgba(limegreen, 0.2)
+  background-color: rgba($primary-color, $opacity-l)
   cursor: pointer
   border: 2px solid transparent
-  transition: border 0.2s ease-in-out
+  transition: border $transition-duration ease-in-out
 
   &:hover, &:active
-    border-color: rgba(limegreen, 0.5)
+    border-color: rgba($primary-color, $opacity-m)
 </style>

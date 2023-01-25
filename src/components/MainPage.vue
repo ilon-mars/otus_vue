@@ -106,28 +106,28 @@ const submitForm = async () => {
   left: 0
   right: 0
   border-radius: 30px
-  box-shadow: 0 0 0 2px #777, 0 0 4px #777
+  box-shadow: 0 0 0 2px $neutral-color, 0 0 4px $neutral-color
   cursor: pointer
   border: 4px solid transparent
   overflow: hidden
-  transition: 0.2s
+  transition: $transition-duration
 
   &:before
     position: absolute
     content: ''
     width: 100%
     height: 100%
-    background-color: #777
+    background-color: $neutral-color
     border-radius: 30px
     transform: translateX(-30px) /*translateX(-(w-h))*/
-    transition: 0.2s
+    transition: $transition-duration
 
 
 .checkbox:checked + .slider:before
   transform: translateX(30px) /*translateX(w-h)*/
-  background-color: limeGreen
+  background-color: $primary-color
 
 
 .checkbox:checked + .slider
-  box-shadow: 0 0 0 2px limeGreen, 0 0 8px limeGreen
+  box-shadow: 0 0 0 2px $primary-color, 0 0 8px $primary-color
 </style>

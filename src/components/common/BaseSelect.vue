@@ -32,14 +32,14 @@ const emit = defineEmits<{
   width: 100%
 
 .input
-  background-color: #333
+  background-color: $dark-color
   border: none
   padding: 10px
-  color: #ededed
+  color: $light-color
   width: 100%
 
   &:focus, &:active
-    outline: 1px solid rgba(limegreen, 0.5)
+    outline: 1px solid rgba($primary-color, $opacity-m)
 
 .label
   display: inline-block

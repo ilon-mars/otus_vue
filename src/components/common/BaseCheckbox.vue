@@ -38,15 +38,15 @@ const model = computed({
   padding: 5px
   cursor: pointer
   border: 2px solid transparent
-  transition: all 0.2s ease-in-out
+  transition: all $transition-duration ease-in-out
   overflow: hidden
 
   &:hover
-    background-color: #555
+    background-color: $dark-neutral-color
 
   &:has(.input:checked)
-    background-color: rgba(limegreen, 0.2)
-    border-color: rgba(limegreen, 0.5)
+    background-color: rgba($primary-color, $opacity-l)
+    border-color: rgba($primary-color, $opacity-m)
 
 .label
   margin-right: 5px
@@ -55,7 +55,7 @@ const model = computed({
   width: 20px
   height: 20px
   opacity: 0
-  fill: limegreen
+  fill: $primary-color
 
 .input
   position: absolute
