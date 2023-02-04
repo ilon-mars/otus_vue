@@ -1,3 +1,30 @@
+<template>
+  <h2 class="h2" :class="$style.title">Добавить ресторан</h2>
+  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
+  <form @submit.prevent="onSubmit" :class="$style.form">
+    <BaseInput v-model="restaurantName" :class="$style.input">Название</BaseInput>
+
+    <BaseInput v-model="restaurantAddress" :class="$style.input">Адрес заведения</BaseInput>
+
+    <BaseSearch v-model="menu" :class="$style.search" :fullData="burgers"
+      >Добавьте бургеры, которые здесь готовят</BaseSearch
+    >
+
+    <ul :class="$style.menu" v-if="menu.length">
+      <li v-for="item in menu" :key="item" :class="$style.item">{{ item }}</li>
+    </ul>
+
+    <button type="submit" :class="$style.addBtn">Добавить</button>
+  </form>
+</template>
+
+<script lang="ts">
+  export default {
+    name: 'AddRestaurantForm',
+    inheritAttrs: false,
+  }
+</script>
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseInput from '@/components/common/BaseInput.vue';
@@ -42,26 +69,6 @@ const onSubmit = async () => {
   emit('submit');
 };
 </script>
-
-<template>
-  <h2 class="h2" :class="$style.title">Добавить ресторан</h2>
-  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
-  <form @submit.prevent="onSubmit" :class="$style.form">
-    <BaseInput v-model="restaurantName" :class="$style.input">Название</BaseInput>
-
-    <BaseInput v-model="restaurantAddress" :class="$style.input">Адрес заведения</BaseInput>
-
-    <BaseSearch v-model="menu" :class="$style.search" :fullData="burgers"
-      >Добавьте бургеры, которые здесь готовят</BaseSearch
-    >
-
-    <ul :class="$style.menu" v-if="menu.length">
-      <li v-for="item in menu" :key="item" :class="$style.item">{{ item }}</li>
-    </ul>
-
-    <button type="submit" :class="$style.addBtn">Добавить</button>
-  </form>
-</template>
 
 <style module lang="sass">
 .form

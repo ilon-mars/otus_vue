@@ -1,3 +1,33 @@
+<template>
+  <h2 class="h2" :class="$style.title">Добавить бургер</h2>
+  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
+  <form @submit.prevent="onSubmit" :class="$style.form">
+    <BaseInput v-model="burgerName" :class="$style.input">Название</BaseInput>
+
+    <BaseInput v-model="burgerImgUrl" :class="$style.input">Ссылка на изображение</BaseInput>
+
+    <span :class="$style.label">Выберите ингредиенты</span>
+    <ul :class="$style.list">
+      <li v-for="item in Ingredients" :key="item">
+        <BaseCheckbox v-model="burgerIngredients" :value="item">{{ item }}</BaseCheckbox>
+      </li>
+    </ul>
+
+    <BaseSelect :options="restaurants" v-model="burgerPlace" :class="$style.select"
+      >Где его готовят</BaseSelect
+    >
+
+    <button type="submit" :class="$style.addBtn">Добавить</button>
+  </form>
+</template>
+
+<script lang="ts">
+  export default {
+    name: 'AddBurgerForm',
+    inheritAttrs: false,
+  }
+</script>
+
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseInput from '@/components/common/BaseInput.vue';
@@ -48,29 +78,6 @@ const onSubmit = async () => {
   emit('submit');
 };
 </script>
-
-<template>
-  <h2 class="h2" :class="$style.title">Добавить бургер</h2>
-  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
-  <form @submit.prevent="onSubmit" :class="$style.form">
-    <BaseInput v-model="burgerName" :class="$style.input">Название</BaseInput>
-
-    <BaseInput v-model="burgerImgUrl" :class="$style.input">Ссылка на изображение</BaseInput>
-
-    <span :class="$style.label">Выберите ингредиенты</span>
-    <ul :class="$style.list">
-      <li v-for="item in Ingredients" :key="item">
-        <BaseCheckbox v-model="burgerIngredients" :value="item">{{ item }}</BaseCheckbox>
-      </li>
-    </ul>
-
-    <BaseSelect :options="restaurants" v-model="burgerPlace" :class="$style.select"
-      >Где его готовят</BaseSelect
-    >
-
-    <button type="submit" :class="$style.addBtn">Добавить</button>
-  </form>
-</template>
 
 <style module lang="sass">
 .form

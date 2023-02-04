@@ -1,31 +1,5 @@
-<script setup lang="ts">
-import type { Burger, Restaurant } from '@/types/items';
-import { Resources } from '@/enums/resources';
-import useApi from '@/hooks/useApi';
-
-const props = defineProps<{
-  burgers: Burger[];
-  restaurants: Restaurant[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'openModal', modalType: string): void;
-  (e: 'deleteItem'): void;
-}>();
-
-const restaurantName = (itemId: string) =>
-  props.restaurants.find((elem) => elem._id === itemId)?.name;
-
-const deleteApi = await useApi(Resources.BURGERS);
-
-const deleteBurger = async (burgerId: string) => {
-  await deleteApi.$api.delete(burgerId);
-  emit('deleteItem');
-};
-</script>
-
 <template>
-  <section class="wrapper">
+  <section>
     <ul v-if="burgers.length">
       <li v-for="burger in burgers" :key="burger._id" :class="$style.burger">
         <h2 :class="$style.title" class="h2">{{ burger.name }}</h2>
@@ -67,6 +41,32 @@ const deleteBurger = async (burgerId: string) => {
     </h2>
   </section>
 </template>
+
+<script setup lang="ts">
+import type { Burger, Restaurant } from '@/types/items';
+import { Resources } from '@/enums/resources';
+import useApi from '@/hooks/useApi';
+
+const props = defineProps<{
+  burgers: Burger[];
+  restaurants: Restaurant[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'openModal', modalType: string): void;
+  (e: 'deleteItem'): void;
+}>();
+
+const restaurantName = (itemId: string) =>
+  props.restaurants.find((elem) => elem._id === itemId)?.name;
+
+const deleteApi = await useApi(Resources.BURGERS);
+
+const deleteBurger = async (burgerId: string) => {
+  await deleteApi.$api.delete(burgerId);
+  emit('deleteItem');
+};
+</script>
 
 <style module lang="sass">
 @import '@/assets/_animations.sass'

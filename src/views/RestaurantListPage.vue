@@ -1,22 +1,6 @@
-<script setup lang="ts">
-import type { Burger, Restaurant } from '@/types/items';
-import { Resources } from '@/enums/resources';
-
-const props = defineProps<{
-  burgers: Burger[];
-  restaurants: Restaurant[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'openModal', modalType: string): void;
-}>();
-
-const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === itemId)?.name;
-</script>
-
 <template>
   <section class="wrapper">
-    <ul v-if="restaurants.length">
+    <ul v-if="restaurants.length" :class="$style.list">
       <li v-for="rest in restaurants" :key="rest._id" :class="$style.restaurant">
         <h2 class="h2" :class="$style.title">{{ rest.name }}</h2>
         <span :class="$style.address">{{ rest.address }}</span>
@@ -42,9 +26,32 @@ const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === i
   </section>
 </template>
 
+<script setup lang="ts">
+import type { Burger, Restaurant } from '@/types/items';
+import { Resources } from '@/enums/resources';
+
+const props = defineProps<{
+  burgers: Burger[];
+  restaurants: Restaurant[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'openModal', modalType: string): void;
+}>();
+
+const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === itemId)?.name;
+</script>
+
 <style module lang="sass">
+.list
+  display: flex
+  flex-wrap: wrap
+  gap: 35px
+
 .restaurant
-  margin-bottom: 35px
+  min-width: 300px
+  max-width: 32%
+  flex-grow: 1
 
 .title
   margin-bottom: 10px
@@ -60,6 +67,10 @@ const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === i
   margin-bottom: 5px
 
 .restaurantTemplate
+  display: flex
+  align-items: center
+  justify-content: center
+
   button
     width: fit-content
     height: fit-content
