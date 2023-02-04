@@ -1,8 +1,10 @@
 <template>
   <header :class="$style.header">
     <nav :class="$style.nav" class="wrapper">
-      <router-link :class="$style.link" :to="{name: Resources.BURGERS}">Бургеры</router-link>
-      <router-link :class="$style.link" :to="{name: Resources.RESTAURANTS}">Рестораны</router-link>
+      <router-link :class="$style.link" :to="{ name: Resources.BURGERS }">Бургеры</router-link>
+      <router-link :class="$style.link" :to="{ name: Resources.RESTAURANTS }"
+        >Рестораны</router-link
+      >
     </nav>
   </header>
 </template>

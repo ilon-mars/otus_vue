@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import { Resources } from '@/enums/resources'
-import BurgerPage from '@/views/BurgerListPage.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import { Resources } from '@/enums/resources';
+import BurgerListPage from '@/views/BurgerListPage.vue';
 
 export default createRouter({
   history: createWebHistory(),
@@ -8,7 +8,12 @@ export default createRouter({
     {
       path: '/',
       name: Resources.BURGERS,
-      component: BurgerPage,
+      component: BurgerListPage,
+    },
+    {
+      path: `/${Resources.BURGERS}/:id`,
+      name: 'BurgerPage',
+      component: () => import('@/views/BurgerPage.vue'),
     },
     {
       path: `/${Resources.RESTAURANTS}`,
@@ -17,4 +22,4 @@ export default createRouter({
     },
     { path: '/:catchAll(.*)', redirect: { name: Resources.BURGERS } },
   ],
-})
+});

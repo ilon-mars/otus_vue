@@ -1,6 +1,8 @@
 import axios from '@/plugins/axios';
 import type { AxiosRequestConfig } from 'axios';
 import type { Item } from '@/types/responseData';
+import data from '@/store';
+import { generateId } from '@/utils/helpers';
 
 class BaseApiService {}
 
@@ -32,17 +34,21 @@ export class CrudApiService extends ReadOnlyApiService {
   }
 
   async post(item: Item) {
-    const { data } = await axios.post(this.#resource, item);
+    (data as any)[this.#resource].push({ ...item, _id: generateId() });
     return data;
   }
 
   async put(editedItem: Item) {
-    const { data } = await axios.put(`${this.#resource}/${editedItem._id}`, editedItem);
+    const itemIndex = (data as any)[this.#resource].findIndex(
+      (item: Item) => item._id === editedItem._id
+    );
+    (data as any)[this.#resource].splice(itemIndex, 1, editedItem);
     return data;
   }
 
   async delete(id: string) {
-    const { data } = await axios.delete(`${this.#resource}/${id}`);
+    const itemIndex = (data as any)[this.#resource].findIndex((item: Item) => item._id === id);
+    (data as any)[this.#resource].splice(itemIndex, 1);
     return data;
   }
 }

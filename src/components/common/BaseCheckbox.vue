@@ -1,3 +1,11 @@
+<template>
+  <label :class="$style.wrapper">
+    <span :class="$style.label"><slot /></span>
+    <input type="checkbox" :value="value" v-model="model" :class="$style.input" />
+    <CheckIcon :class="$style.checkmark" />
+  </label>
+</template>
+
 <script setup lang="ts">
 import { computed } from 'vue';
 import CheckIcon from '@/components/icons/CheckIcon.vue';
@@ -20,14 +28,6 @@ const model = computed({
   },
 });
 </script>
-
-<template>
-  <label :class="$style.wrapper">
-    <span :class="$style.label"><slot /></span>
-    <input type="checkbox" :value="value" v-model="model" :class="$style.input" />
-    <CheckIcon :class="$style.checkmark" />
-  </label>
-</template>
 
 <style module lang="sass">
 .wrapper

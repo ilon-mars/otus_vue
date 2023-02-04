@@ -5,10 +5,19 @@
         <h2 class="h2" :class="$style.title">{{ rest.name }}</h2>
         <span :class="$style.address">{{ rest.address }}</span>
 
-        <h3 class="h3" :class="$style.menu">Меню</h3>
-        <ul>
-          <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ itemName(item) }}</li>
-        </ul>
+        <div v-if="rest.menu.length">
+          <h3 class="h3" :class="$style.menu">Меню</h3>
+          <ul>
+            <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ itemName(item) }}</li>
+          </ul>
+        </div>
+
+        <div v-else>
+          Знаете, что тут готовят?
+          <button @click="emit('openModal', Resources.BURGERS)" class="add-button">
+            Добавьте бургер
+          </button>
+        </div>
       </li>
 
       <li :class="$style.restaurantTemplate">
@@ -39,7 +48,7 @@ const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
 }>();
 
-const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === itemId)?.name;
+const itemName = (itemId: string) => props.burgers.find(elem => elem._id === itemId)?.name;
 </script>
 
 <style module lang="sass">

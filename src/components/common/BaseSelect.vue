@@ -1,16 +1,3 @@
-<script setup lang="ts">
-import type { Restaurant } from '@/types/items';
-
-defineProps<{
-  modelValue: string;
-  options: Restaurant[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
-}>();
-</script>
-
 <template>
   <label :class="$style.wrapper">
     <span :class="$style.label"><slot /></span>
@@ -26,6 +13,19 @@ const emit = defineEmits<{
     </select>
   </label>
 </template>
+
+<script setup lang="ts">
+import type { Restaurant } from '@/types/items';
+
+defineProps<{
+  modelValue: string;
+  options: Restaurant[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void;
+}>();
+</script>
 
 <style module lang="sass">
 .wrapper

@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts">
-  export default {
-    name: 'AddBurgerForm',
-    inheritAttrs: false,
-  }
+export default {
+  name: 'AddBurgerForm',
+  inheritAttrs: false,
+};
 </script>
 
 <script setup lang="ts">
@@ -58,7 +58,12 @@ const onSubmit = async () => {
   const ingredients = Object.values(burgerIngredients.value);
   const restaurants: string[] = [burgerPlace.value];
 
-  if (!burgerName.value || !burgerImgUrl.value || ingredients.length === 0 || !burgerPlace.value) {
+  if (
+    !burgerName.value ||
+    !burgerImgUrl.value ||
+    ingredients.length === 0 ||
+    (!burgerPlace.value && restaurants.length)
+  ) {
     return;
   }
 

@@ -4,6 +4,6 @@ import router from './router';
 
 import '@/assets/_main.sass';
 
-const app = createApp(App)
+const app = createApp(App);
 
 app.use(router).mount('#app');
