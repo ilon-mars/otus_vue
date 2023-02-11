@@ -8,7 +8,9 @@
         <div v-if="rest.menu.length">
           <h3 class="h3" :class="$style.menu">Меню</h3>
           <ul>
-            <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ itemName(item) }}</li>
+            <li v-for="item in rest.menu" :key="item" :class="$style.item">
+              {{ burgerName(item) }}
+            </li>
           </ul>
         </div>
 
@@ -36,19 +38,20 @@
 </template>
 
 <script setup lang="ts">
-import type { Burger, Restaurant } from '@/types/items';
+import { storeToRefs } from 'pinia';
 import { Resources } from '@/enums/resources';
+import { useBurgerStore } from '@/stores/burgers';
+import { useRestaurantStore } from '@/stores/restaurants';
 
-const props = defineProps<{
-  burgers: Burger[];
-  restaurants: Restaurant[];
-}>();
+const burgersStore = useBurgerStore();
+const restaurantsStore = useRestaurantStore();
+
+const { restaurants } = storeToRefs(restaurantsStore);
+const { burgerName } = storeToRefs(burgersStore);
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
 }>();
-
-const itemName = (itemId: string) => props.burgers.find(elem => elem._id === itemId)?.name;
 </script>
 
 <style module lang="sass">

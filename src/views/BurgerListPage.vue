@@ -44,20 +44,20 @@
 </template>
 
 <script setup lang="ts">
-import type { Burger, Restaurant } from '@/types/items';
+import { storeToRefs } from 'pinia';
+import { useBurgerStore } from '@/stores/burgers';
+import { useRestaurantStore } from '@/stores/restaurants';
 import { Resources } from '@/enums/resources';
 
-const props = defineProps<{
-  burgers: Burger[];
-  restaurants: Restaurant[];
-}>();
+const restaurantsStore = useRestaurantStore();
+const burgersStore = useBurgerStore();
+
+const { burgers } = storeToRefs(burgersStore);
+const { restaurantName } = storeToRefs(restaurantsStore);
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
 }>();
-
-const restaurantName = (itemId: string) =>
-  props.restaurants.find(elem => elem._id === itemId)?.name;
 </script>
 
 <style module lang="sass">

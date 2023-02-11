@@ -1,8 +1,10 @@
 import axios from '@/plugins/axios';
 import type { AxiosRequestConfig } from 'axios';
-import type { Item } from '@/types/responseData';
+import type { Burger, Restaurant } from '@/types/items';
 import data from '@/store';
-import { generateId } from '@/utils/helpers';
+
+export type AllData = Burger[] | Restaurant[];
+export type Item = Burger | Restaurant;
 
 class BaseApiService {}
 
@@ -34,7 +36,7 @@ export class CrudApiService extends ReadOnlyApiService {
   }
 
   async post(item: Item) {
-    (data as any)[this.#resource].push({ ...item, _id: generateId() });
+    (data as any)[this.#resource].push(item);
     return data;
   }
 

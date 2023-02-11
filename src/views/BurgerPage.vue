@@ -33,25 +33,30 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useBurgerStore } from '@/stores/burgers';
+import { useRestaurantStore } from '@/stores/restaurants';
 import { Resources } from '@/enums/resources';
-import useApi from '@/hooks/useApi';
-import data from '@/store';
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
   (e: 'deleteItem'): void;
 }>();
 
+const restaurantsStore = useRestaurantStore();
+const burgersStore = useBurgerStore();
+
 const route = useRoute();
 const router = useRouter();
-const burger = computed(() => data.burgers.find(burger => burger._id === route.params.id));
 
-const restaurantName = (itemId: string) => data.restaurants.find(elem => elem._id === itemId)?.name;
+const { burgers } = storeToRefs(burgersStore);
+const { restaurantName } = storeToRefs(restaurantsStore);
+const removeBurger = burgersStore.deleteBurger;
 
-const deleteApi = await useApi(Resources.BURGERS);
+const burger = computed(() => burgers.value.find(burger => burger._id === route.params.id));
 
 const deleteBurger = async (burgerId: string) => {
-  await deleteApi.$api.delete(burgerId);
+  await removeBurger(burgerId);
   emit('deleteItem');
   router.push({ name: Resources.BURGERS });
 };

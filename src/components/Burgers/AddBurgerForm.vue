@@ -30,29 +30,25 @@ export default {
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRestaurantStore } from '@/stores/restaurants';
+import { useBurgerStore } from '@/stores/burgers';
 import BaseInput from '@/components/common/BaseInput.vue';
 import BaseCheckbox from '@/components/common/BaseCheckbox.vue';
 import BaseSelect from '@/components/common/BaseSelect.vue';
 import Ingredients from '@/enums/ingredients';
-import type { Restaurant } from '@/types/items';
-import useApi from '@/hooks/useApi';
-import { Resources } from '@/enums/resources';
-import type { Item } from '@/types/responseData';
-
-defineProps<{
-  restaurants: Restaurant[];
-}>();
+import type { Burger } from '@/types/items';
 
 const emit = defineEmits<{
   (e: 'submit'): void;
 }>();
 
+const restaurants = useRestaurantStore().restaurants;
+const burgersStore = useBurgerStore();
+
 const burgerName = ref('');
 const burgerImgUrl = ref('');
 const burgerIngredients = ref([Ingredients.BUN]);
 const burgerPlace = ref('');
-
-const addBurger = await useApi(Resources.BURGERS);
 
 const onSubmit = async () => {
   const ingredients = Object.values(burgerIngredients.value);
@@ -67,14 +63,14 @@ const onSubmit = async () => {
     return;
   }
 
-  const burger: Item = {
+  const burger: Burger = {
     name: burgerName.value,
     image: burgerImgUrl.value,
     ingredients: ingredients,
     restaurants: restaurants,
   };
 
-  await addBurger.$api.post(burger);
+  await burgersStore.addBurger(burger);
 
   burgerName.value = '';
   burgerImgUrl.value = '';
