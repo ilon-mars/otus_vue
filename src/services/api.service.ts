@@ -1,7 +1,7 @@
 import axios from '@/plugins/axios';
 import type { AxiosRequestConfig } from 'axios';
 import type { Burger, Restaurant } from '@/types/items';
-import data from '@/store';
+import data, { addItem, updateItem, removeItem } from '@/store';
 
 export type AllData = Burger[] | Restaurant[];
 export type Item = Burger | Restaurant;
@@ -36,21 +36,17 @@ export class CrudApiService extends ReadOnlyApiService {
   }
 
   async post(item: Item) {
-    (data as any)[this.#resource].push(item);
+    addItem(item, this.#resource);
     return data;
   }
 
   async put(editedItem: Item) {
-    const itemIndex = (data as any)[this.#resource].findIndex(
-      (item: Item) => item._id === editedItem._id
-    );
-    (data as any)[this.#resource].splice(itemIndex, 1, editedItem);
+    updateItem(editedItem, this.#resource);
     return data;
   }
 
   async delete(id: string) {
-    const itemIndex = (data as any)[this.#resource].findIndex((item: Item) => item._id === id);
-    (data as any)[this.#resource].splice(itemIndex, 1);
+    removeItem(id, this.#resource);
     return data;
   }
 }
