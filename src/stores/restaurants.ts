@@ -1,17 +1,14 @@
 import { defineStore } from 'pinia';
+import { useStorage } from '@vueuse/core';
 import type { Restaurant } from '@/types/items';
 import { Resources } from '@/enums/resources';
 import useApi from '@/hooks/useApi';
 import { generateId } from '@/utils/helpers';
 
-export type RestaurantsState = {
-  restaurants: Restaurant[];
-};
-
 const api = await useApi(Resources.RESTAURANTS);
 
 export const useRestaurantStore = defineStore('restaurants', {
-  state: () => ({ restaurants: [] } as RestaurantsState),
+  state: () => ({ restaurants: useStorage('restaurants', [] as Restaurant[]) }),
 
   getters: {
     restaurantName: state => {
