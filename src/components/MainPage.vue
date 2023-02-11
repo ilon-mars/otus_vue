@@ -7,14 +7,10 @@ import RestaurantsList from '@/components/Restaurants/RestaurantsList.vue';
 import AppModal from '@/components/AppModal.vue';
 import useApi from '@/hooks/useApi';
 import { Resources } from '@/enums/resources';
+import data from '@/store';
 
 const getBurgers = await useApi(Resources.BURGERS);
 const getRestaurants = await useApi(Resources.RESTAURANTS);
-
-const data = reactive({
-  burgers: [],
-  restaurants: [],
-});
 
 data.burgers = await getBurgers.$api.query();
 data.restaurants = await getRestaurants.$api.query();
@@ -33,17 +29,13 @@ const closeModal = () => {
   isModalOpen.value = false;
 };
 
-const componentKey = ref(0);
-
-const forceRerender = async () => {
-  componentKey.value += 1;
-  data.burgers = await getBurgers.$api.query();
-  data.restaurants = await getRestaurants.$api.query();
+const updateData = async () => {
+  console.log('updated');
 };
 
 const submitForm = async () => {
   closeModal();
-  await forceRerender();
+  await updateData();
 };
 </script>
 
@@ -62,8 +54,7 @@ const submitForm = async () => {
     :is="toggle ? RestaurantsList : BurgersList"
     :burgers="data.burgers"
     :restaurants="data.restaurants"
-    :key="componentKey"
-    @deleteItem="forceRerender"
+    @deleteItem="updateData"
   />
 
   <AppModal :isOpen="isModalOpen" @close="closeModal">
