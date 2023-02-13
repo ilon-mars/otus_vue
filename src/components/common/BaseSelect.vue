@@ -22,7 +22,6 @@ const onChange = (elem: HTMLSelectElement) => {
   const selectedOptionList = Array.from(elem.options).filter(option => option.selected && option.value);
   optionValues.value = selectedOptionList.map(item => item.value)
   emit('update:modelValue', optionValues.value);
-  console.log('emit', optionValues.value)
 }
 </script>
 
