@@ -37,6 +37,17 @@ const submitForm = async () => {
   closeModal();
   await updateData();
 };
+
+const allRestaurants = computed(() => {
+  const restaurantList = data.burgers.reduce((acc, item) => {
+    item.restaurants.forEach(rest => {
+      acc.add(rest);
+    })
+    return acc;
+  }, new Set<string>());
+
+  return [...restaurantList];
+})
 </script>
 
 <template>

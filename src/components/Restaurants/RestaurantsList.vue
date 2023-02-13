@@ -10,8 +10,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
 }>();
-
-const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === itemId)?.name;
 </script>
 
 <template>
@@ -23,7 +21,7 @@ const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === i
 
         <h3 class="h3" :class="$style.menu">Меню</h3>
         <ul>
-          <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ itemName(item) }}</li>
+          <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ item }}</li>
         </ul>
       </li>
 

@@ -13,9 +13,6 @@ const emit = defineEmits<{
   (e: 'deleteItem'): void;
 }>();
 
-const restaurantName = (itemId: string) =>
-  props.restaurants.find((elem) => elem._id === itemId)?.name;
-
 const deleteApi = await useApi(Resources.BURGERS);
 
 const deleteBurger = async (burgerId: string) => {
@@ -44,7 +41,7 @@ const deleteBurger = async (burgerId: string) => {
           <h3 class="h3" :class="$style.subtitle">Рестораны, где их готовят</h3>
           <ul>
             <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
-              {{ restaurantName(item) }}
+              {{ item }}
             </li>
           </ul>
         </div>
