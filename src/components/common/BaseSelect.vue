@@ -1,14 +1,29 @@
 <script setup lang="ts">
-import type { Restaurant } from '@/types/items';
+import { ref } from 'vue';
+import type { Item } from '@/types/responseData';
 
-defineProps<{
-  modelValue: string;
-  options: Restaurant[];
-}>();
+interface Props {
+  modelValue: string[];
+  options: string[];
+  multiple?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  multiple: false,
+})
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
+  (e: 'update:modelValue', value: string[]): void;
 }>();
+
+const optionValues = ref<Array<string>>([]);
+
+const onChange = (elem: HTMLSelectElement) => {
+  const selectedOptionList = Array.from(elem.options).filter(option => option.selected && option.value);
+  optionValues.value = selectedOptionList.map(item => item.value)
+  emit('update:modelValue', optionValues.value);
+  console.log('emit', optionValues.value)
+}
 </script>
 
 <template>
@@ -16,12 +31,18 @@ const emit = defineEmits<{
     <span :class="$style.label"><slot /></span>
     <select
       :value="modelValue"
-      @input="emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-      :class="$style.input"
+      @change="onChange(($event.target as HTMLSelectElement))"
+      :class="$style.select"
+      :multiple="multiple"
     >
       <option disabled :value="null">Выберите ресторан из списка</option>
-      <option v-for="option in options" :value="option._id" :key="option._id">
-        {{ option.name }}
+      <option
+        v-for="option in options"
+        :value="option"
+        :key="option"
+        :selected="optionValues.includes(option)"
+        :class="[optionValues.includes(option) && $style.option]">
+        {{ option }}
       </option>
     </select>
   </label>
@@ -31,7 +52,7 @@ const emit = defineEmits<{
 .wrapper
   width: 100%
 
-.input
+.select
   background-color: $dark-color
   border: none
   padding: 10px
@@ -41,7 +62,15 @@ const emit = defineEmits<{
   &:focus, &:active
     outline: 1px solid rgba($primary-color, $opacity-m)
 
+    .option
+      background-color: rgba($primary-color, $opacity-m)
+      color: $light-color
+
 .label
   display: inline-block
   margin-bottom: 10px
+
+.option
+  background-color: rgba($primary-color, $opacity-m)
+  color: $light-color
 </style>

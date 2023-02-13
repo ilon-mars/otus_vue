@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, computed } from 'vue';
 import BurgersList from '@/components/Burgers/BurgersList.vue';
 import AddBurgerForm from '@/components/Burgers/AddBurgerForm.vue';
 import AddRestaurantForm from '@/components/Restaurants/AddRestaurantForm.vue';
@@ -73,6 +73,7 @@ const allRestaurants = computed(() => {
       :is="modalType === Resources.BURGERS ? AddBurgerForm : AddRestaurantForm"
       :restaurants="data.restaurants"
       :burgers="data.burgers"
+      :options="allRestaurants"
       @submit="submitForm"
     />
   </AppModal>
