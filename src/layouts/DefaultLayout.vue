@@ -69,13 +69,13 @@ const submitForm = async () => {
 .slide-enter-active,
 .slide-leave-active
   position: absolute
-  transition: all 0.6s ease
+  transition: all 0.7s ease-in
 
 .slide-enter-from
   left: -100%
 
 .slide-enter-to
-  left: 0%
+  left: 0
 
 .slide-leave-from
   transform: scale(1)
