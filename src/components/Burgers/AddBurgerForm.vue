@@ -26,7 +26,7 @@ const addBurger = await useApi(Resources.BURGERS);
 const onSubmit = async () => {
   const ingredients = Object.values(burgerIngredients.value);
 
-  if (!burgerName.value || !burgerImgUrl.value || ingredients.length === 0 || !burgerPlace.value) {
+  if (!burgerName.value || ingredients.length === 0 || !burgerPlace.value) {
     return;
   }
 
@@ -49,7 +49,6 @@ const onSubmit = async () => {
 
 <template>
   <h2 class="h2" :class="$style.title">Добавить бургер</h2>
-  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
   <form @submit.prevent="onSubmit" :class="$style.form">
     <BaseInput v-model="burgerName" :class="$style.input">Название</BaseInput>
 
@@ -78,11 +77,6 @@ const onSubmit = async () => {
 
 .title
   margin-bottom: 15px
-
-.tip
-  display: inline-block
-  font-size: 0.75rem
-  margin-bottom: 25px
 
 .input
   margin-bottom: 20px

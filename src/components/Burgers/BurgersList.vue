@@ -2,8 +2,9 @@
 import type { Burger, Restaurant } from '@/types/items';
 import { Resources } from '@/enums/resources';
 import useApi from '@/hooks/useApi';
+import burgerTemplateImg from '@/assets/img/burgerTemplateImg.png';
 
-const props = defineProps<{
+defineProps<{
   burgers: Burger[];
   restaurants: Restaurant[];
 }>();
@@ -26,7 +27,7 @@ const deleteBurger = async (burgerId: string) => {
     <ul v-if="burgers.length">
       <li v-for="burger in burgers" :key="burger._id" :class="$style.burger">
         <h2 :class="$style.title" class="h2">{{ burger.name }}</h2>
-        <img :src="burger.image" :alt="burger.name" :class="$style.img" />
+        <img :src="burger.image ? burger.image : burgerTemplateImg" :alt="burger.name" :class="$style.img" />
 
         <div :class="$style.ingredients">
           <h3 class="h3" :class="$style.subtitle">Состав</h3>
