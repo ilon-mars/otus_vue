@@ -48,7 +48,7 @@ const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
 }>();
 
-const itemName = (itemId: string) => props.burgers.find(elem => elem._id === itemId)?.name;
+const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === itemId)?.name;
 </script>
 
 <style module lang="sass">
@@ -58,7 +58,7 @@ const itemName = (itemId: string) => props.burgers.find(elem => elem._id === ite
   gap: 35px
 
 .restaurant
-  min-width: 300px
+    min-width: 300px
   max-width: 32%
   flex-grow: 1
 

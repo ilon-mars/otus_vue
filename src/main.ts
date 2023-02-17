@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 
-import '@/assets/_main.sass';
+import '@/assets/styles/_main.sass';
 
 const app = createApp(App);
 

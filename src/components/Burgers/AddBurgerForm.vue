@@ -1,6 +1,5 @@
 <template>
   <h2 class="h2" :class="$style.title">Добавить бургер</h2>
-  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
   <form @submit.prevent="onSubmit" :class="$style.form">
     <BaseInput v-model="burgerName" :class="$style.input">Название</BaseInput>
 
@@ -13,7 +12,7 @@
       </li>
     </ul>
 
-    <BaseSelect :options="restaurants" v-model="burgerPlace" :class="$style.select"
+    <BaseSelect :options="options" v-model="burgerPlace" :class="$style.select" multiple
       >Где его готовят</BaseSelect
     >
 
@@ -34,13 +33,12 @@ import BaseInput from '@/components/common/BaseInput.vue';
 import BaseCheckbox from '@/components/common/BaseCheckbox.vue';
 import BaseSelect from '@/components/common/BaseSelect.vue';
 import Ingredients from '@/enums/ingredients';
-import type { Restaurant } from '@/types/items';
+import type { Burger } from '@/types/items';
 import useApi from '@/hooks/useApi';
 import { Resources } from '@/enums/resources';
-import type { Item } from '@/types/responseData';
 
 defineProps<{
-  restaurants: Restaurant[];
+  options: string[];
 }>();
 
 const emit = defineEmits<{
@@ -50,28 +48,22 @@ const emit = defineEmits<{
 const burgerName = ref('');
 const burgerImgUrl = ref('');
 const burgerIngredients = ref([Ingredients.BUN]);
-const burgerPlace = ref('');
+const burgerPlace = ref<Array<string>>([]);
 
 const addBurger = await useApi(Resources.BURGERS);
 
 const onSubmit = async () => {
   const ingredients = Object.values(burgerIngredients.value);
-  const restaurants: string[] = [burgerPlace.value];
 
-  if (
-    !burgerName.value ||
-    !burgerImgUrl.value ||
-    ingredients.length === 0 ||
-    (!burgerPlace.value && restaurants.length)
-  ) {
+  if (!burgerName.value || ingredients.length === 0 || !burgerPlace.value) {
     return;
   }
 
-  const burger: Item = {
+  const burger: Burger = {
     name: burgerName.value,
     image: burgerImgUrl.value,
     ingredients: ingredients,
-    restaurants: restaurants,
+    restaurants: [...burgerPlace.value],
   };
 
   await addBurger.$api.post(burger);
@@ -79,7 +71,7 @@ const onSubmit = async () => {
   burgerName.value = '';
   burgerImgUrl.value = '';
   burgerIngredients.value = [Ingredients.BUN];
-  burgerPlace.value = '';
+  burgerPlace.value = [];
   emit('submit');
 };
 </script>
@@ -92,11 +84,6 @@ const onSubmit = async () => {
 
 .title
   margin-bottom: 15px
-
-.tip
-  display: inline-block
-  font-size: 0.75rem
-  margin-bottom: 25px
 
 .input
   margin-bottom: 20px

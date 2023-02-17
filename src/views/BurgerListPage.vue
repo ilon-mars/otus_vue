@@ -1,13 +1,17 @@
 <template>
   <section>
     <ul v-if="burgers.length">
-      <li v-for="burger in burgers" :key="burger._id">
+      <li v-for="burger in burgers" :key="burger._id" :class="$style.burger">
         <router-link
           :to="{ name: 'BurgerPage', params: { id: burger._id } }"
           :class="$style.burger"
         >
           <h2 :class="$style.title" class="h2">{{ burger.name }}</h2>
-          <img :src="burger.image" :alt="burger.name" :class="$style.img" />
+          <img
+            :src="burger.image ? burger.image : burgerTemplateImg"
+            :alt="burger.name"
+            :class="$style.img"
+          />
           <div :class="$style.ingredients">
             <h3 class="h3" :class="$style.subtitle">Состав</h3>
             <ul :class="$style.list">
@@ -20,7 +24,7 @@
             <h3 class="h3" :class="$style.subtitle">Рестораны, где можно попробовать</h3>
             <ul>
               <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
-                {{ restaurantName(item) }}
+                {{ item }}
               </li>
             </ul>
           </div>
@@ -46,8 +50,9 @@
 <script setup lang="ts">
 import type { Burger, Restaurant } from '@/types/items';
 import { Resources } from '@/enums/resources';
+import burgerTemplateImg from '@/assets/img/burgerTemplateImg.png';
 
-const props = defineProps<{
+defineProps<{
   burgers: Burger[];
   restaurants: Restaurant[];
 }>();
@@ -55,14 +60,11 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
 }>();
-
-const restaurantName = (itemId: string) =>
-  props.restaurants.find(elem => elem._id === itemId)?.name;
 </script>
 
 <style module lang="sass">
-@import '@/assets/_animations.sass'
-@import '@/assets/_functions.sass'
+@import '@/assets/styles/_animations.sass'
+@import '@/assets/styles/_functions.sass'
 
 .burger
   display: grid
