@@ -50,9 +50,6 @@ const menu = ref([] as string[]);
 const addRestaurant = await useApi(Resources.RESTAURANTS);
 
 const onSubmit = async () => {
-  const burgerIds = menu.value.map(
-    burgerName => props.burgers.find(item => item.name === burgerName)?._id
-  );
   if (
     !restaurantName.value ||
     !restaurantAddress.value ||
@@ -63,10 +60,11 @@ const onSubmit = async () => {
   const restaurant: Item = {
     name: restaurantName.value,
     address: restaurantAddress.value,
-    menu: burgerIds as string[],
+    menu: menu.value,
   };
 
   await addRestaurant.$api.post(restaurant);
+
   restaurantName.value = '';
   restaurantAddress.value = '';
   menu.value = [];

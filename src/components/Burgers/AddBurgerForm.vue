@@ -28,17 +28,18 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import BaseInput from '@/components/common/BaseInput.vue';
 import BaseCheckbox from '@/components/common/BaseCheckbox.vue';
 import BaseSelect from '@/components/common/BaseSelect.vue';
 import Ingredients from '@/enums/ingredients';
-import type { Burger } from '@/types/items';
+import type { Burger, Restaurant } from '@/types/items';
 import useApi from '@/hooks/useApi';
 import { Resources } from '@/enums/resources';
 
-defineProps<{
-  options: string[];
+const props = defineProps<{
+  restaurants: Restaurant[];
+  burgers: Burger[];
 }>();
 
 const emit = defineEmits<{
@@ -51,6 +52,8 @@ const burgerIngredients = ref([Ingredients.BUN]);
 const burgerPlace = ref<Array<string>>([]);
 
 const addBurger = await useApi(Resources.BURGERS);
+
+const options = computed(() => props.restaurants.map(item => item.name));
 
 const onSubmit = async () => {
   const ingredients = Object.values(burgerIngredients.value);

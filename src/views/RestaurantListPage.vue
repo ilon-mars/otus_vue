@@ -8,7 +8,7 @@
         <div v-if="rest.menu.length">
           <h3 class="h3" :class="$style.menu">Меню</h3>
           <ul>
-            <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ itemName(item) }}</li>
+            <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ item }}</li>
           </ul>
         </div>
 
@@ -39,7 +39,7 @@
 import type { Burger, Restaurant } from '@/types/items';
 import { Resources } from '@/enums/resources';
 
-const props = defineProps<{
+defineProps<{
   burgers: Burger[];
   restaurants: Restaurant[];
 }>();
@@ -47,8 +47,6 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
 }>();
-
-const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === itemId)?.name;
 </script>
 
 <style module lang="sass">
@@ -58,7 +56,7 @@ const itemName = (itemId: string) => props.burgers.find((elem) => elem._id === i
   gap: 35px
 
 .restaurant
-    min-width: 300px
+  min-width: 300px
   max-width: 32%
   flex-grow: 1
 
