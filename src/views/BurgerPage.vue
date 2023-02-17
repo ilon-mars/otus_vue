@@ -14,7 +14,7 @@
       <h3 class="h3" :class="$style.subtitle">Рестораны, где его можно попробовать</h3>
       <ul v-if="burger.restaurants">
         <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
-          {{ restaurantName(item) }}
+          {{ item }}
         </li>
       </ul>
       <div v-else>Знаете ресторан, где готовят этот бургер? <button>Добавьте его</button></div>
@@ -35,7 +35,6 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useBurgerStore } from '@/stores/burgers';
-import { useRestaurantStore } from '@/stores/restaurants';
 import { Resources } from '@/enums/resources';
 
 const emit = defineEmits<{
@@ -43,14 +42,12 @@ const emit = defineEmits<{
   (e: 'deleteItem'): void;
 }>();
 
-const restaurantsStore = useRestaurantStore();
 const burgersStore = useBurgerStore();
 
 const route = useRoute();
 const router = useRouter();
 
 const { burgers } = storeToRefs(burgersStore);
-const { restaurantName } = storeToRefs(restaurantsStore);
 const removeBurger = burgersStore.deleteBurger;
 
 const burger = computed(() => burgers.value.find(burger => burger._id === route.params.id));
