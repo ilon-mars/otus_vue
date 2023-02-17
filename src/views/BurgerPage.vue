@@ -63,8 +63,8 @@ const deleteBurger = async (burgerId: string) => {
 </script>
 
 <style module lang="sass">
-@import '@/assets/_animations.sass'
-@import '@/assets/_functions.sass'
+@import '@/assets/styles/_animations.sass'
+@import '@/assets/styles/_functions.sass'
 
 .burger
   display: grid

@@ -1,7 +1,7 @@
 <template>
   <section>
     <ul v-if="burgers.length">
-      <li v-for="burger in burgers" :key="burger._id" :class="$style.burger">
+      <li v-for="burger in burgers" :key="burger._id">
         <router-link
           :to="{ name: 'BurgerPage', params: { id: burger._id } }"
           :class="$style.burger"

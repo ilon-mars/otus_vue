@@ -38,14 +38,10 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { Resources } from '@/enums/resources';
-import { useBurgerStore } from '@/stores/burgers';
 import { useRestaurantStore } from '@/stores/restaurants';
 
-const burgersStore = useBurgerStore();
 const restaurantsStore = useRestaurantStore();
-
 const { restaurants } = storeToRefs(restaurantsStore);
-const { burgerName } = storeToRefs(burgersStore);
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;

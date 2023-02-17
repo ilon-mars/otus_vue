@@ -10,12 +10,6 @@ const api = await useApi(Resources.BURGERS);
 export const useBurgerStore = defineStore('burgers', {
   state: () => ({ burgers: useStorage('burgers', [] as Burger[]) }),
 
-  getters: {
-    burgerName: state => {
-      return (burgerId: string) => state.burgers.find(item => item._id === burgerId)?.name;
-    },
-  },
-
   actions: {
     async loadBurgers() {
       this.burgers = await api.$api.query();

@@ -45,9 +45,6 @@ const restaurantAddress = ref('');
 const menu = ref([] as string[]);
 
 const onSubmit = async () => {
-  const burgerIds = menu.value.map(
-    burgerName => burgers.find(item => item.name === burgerName)?._id
-  );
   if (
     !restaurantName.value ||
     !restaurantAddress.value ||
@@ -58,7 +55,7 @@ const onSubmit = async () => {
   const restaurant: Restaurant = {
     name: restaurantName.value,
     address: restaurantAddress.value,
-    menu: burgerIds as string[],
+    menu: menu.value,
   };
 
   await restaurantsStore.addRestaurant(restaurant);

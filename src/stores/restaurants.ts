@@ -10,13 +10,6 @@ const api = await useApi(Resources.RESTAURANTS);
 export const useRestaurantStore = defineStore('restaurants', {
   state: () => ({ restaurants: useStorage('restaurants', [] as Restaurant[]) }),
 
-  getters: {
-    restaurantName: state => {
-      return (restaurantId: string) =>
-        state.restaurants.find(item => item._id === restaurantId)?.name;
-    },
-  },
-
   actions: {
     async loadRestaurants() {
       this.restaurants = await api.$api.query();
