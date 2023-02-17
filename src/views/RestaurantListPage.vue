@@ -8,9 +8,7 @@
         <div v-if="rest.menu.length">
           <h3 class="h3" :class="$style.menu">Меню</h3>
           <ul>
-            <li v-for="item in rest.menu" :key="item" :class="$style.item">
-              {{ burgerName(item) }}
-            </li>
+            <li v-for="item in rest.menu" :key="item" :class="$style.item">{{ item }}</li>
           </ul>
         </div>
 

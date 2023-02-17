@@ -1,6 +1,5 @@
 <template>
   <h2 class="h2" :class="$style.title">Добавить бургер</h2>
-  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
   <form @submit.prevent="onSubmit" :class="$style.form">
     <BaseInput v-model="burgerName" :class="$style.input">Название</BaseInput>
 
@@ -13,7 +12,7 @@
       </li>
     </ul>
 
-    <BaseSelect :options="restaurants" v-model="burgerPlace" :class="$style.select"
+    <BaseSelect :options="restaurantList" v-model="burgerPlace" :class="$style.select" multiple
       >Где его готовят</BaseSelect
     >
 
@@ -29,7 +28,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRestaurantStore } from '@/stores/restaurants';
 import { useBurgerStore } from '@/stores/burgers';
 import BaseInput from '@/components/common/BaseInput.vue';
@@ -48,11 +47,12 @@ const burgersStore = useBurgerStore();
 const burgerName = ref('');
 const burgerImgUrl = ref('');
 const burgerIngredients = ref([Ingredients.BUN]);
-const burgerPlace = ref('');
+const burgerPlace = ref<Array<string>>([]);
+
+const restaurantList = computed(() => restaurants.map(item => item.name));
 
 const onSubmit = async () => {
   const ingredients = Object.values(burgerIngredients.value);
-  const restaurants: string[] = [burgerPlace.value];
 
   if (
     !burgerName.value ||
@@ -60,22 +60,20 @@ const onSubmit = async () => {
     ingredients.length === 0 ||
     (!burgerPlace.value && restaurants.length)
   ) {
-    return;
+    const burger: Burger = {
+      name: burgerName.value,
+      image: burgerImgUrl.value,
+      ingredients: ingredients,
+      restaurants: [...burgerPlace.value],
+    };
+
+    await burgersStore.addBurger(burger);
   }
-
-  const burger: Burger = {
-    name: burgerName.value,
-    image: burgerImgUrl.value,
-    ingredients: ingredients,
-    restaurants: restaurants,
-  };
-
-  await burgersStore.addBurger(burger);
 
   burgerName.value = '';
   burgerImgUrl.value = '';
   burgerIngredients.value = [Ingredients.BUN];
-  burgerPlace.value = '';
+  burgerPlace.value = [];
   emit('submit');
 };
 </script>
@@ -88,11 +86,6 @@ const onSubmit = async () => {
 
 .title
   margin-bottom: 15px
-
-.tip
-  display: inline-block
-  font-size: 0.75rem
-  margin-bottom: 25px
 
 .input
   margin-bottom: 20px
