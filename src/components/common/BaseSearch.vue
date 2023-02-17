@@ -1,37 +1,3 @@
-<script setup lang="ts">
-import { computed, ref } from 'vue';
-
-const props = defineProps<{
-  modelValue: string[];
-  fullData: any[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void;
-}>();
-
-const input = ref('');
-const menu = ref(new Set<string>());
-
-const filteredList = computed(() =>
-  props.fullData.filter((item) => item.name.toLowerCase().includes(input.value.toLowerCase()))
-);
-
-const onInput = (currentValue: string) => {
-  input.value = currentValue;
-  emit('update:modelValue', [...menu.value]);
-};
-
-const addToMenu = (name: string) => {
-  menu.value.add(name);
-  isSearchVisible.value = false;
-  input.value = '';
-  emit('update:modelValue', [...menu.value]);
-};
-
-const isSearchVisible = ref(false);
-</script>
-
 <template>
   <div :class="$style.root">
     <label :class="$style.wrapper">
@@ -58,6 +24,40 @@ const isSearchVisible = ref(false);
     </ul>
   </div>
 </template>
+
+<script setup lang="ts">
+import { computed, ref } from 'vue';
+
+const props = defineProps<{
+  modelValue: string[];
+  fullData: any[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string[]): void;
+}>();
+
+const input = ref('');
+const menu = ref(new Set<string>());
+
+const filteredList = computed(() =>
+  props.fullData.filter(item => item.name.toLowerCase().includes(input.value.toLowerCase()))
+);
+
+const onInput = (currentValue: string) => {
+  input.value = currentValue;
+  emit('update:modelValue', [...menu.value]);
+};
+
+const addToMenu = (name: string) => {
+  menu.value.add(name);
+  isSearchVisible.value = false;
+  input.value = '';
+  emit('update:modelValue', [...menu.value]);
+};
+
+const isSearchVisible = ref(false);
+</script>
 
 <style module lang="sass">
 .root

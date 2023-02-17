@@ -1,36 +1,9 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-import type { Item } from '@/types/responseData';
-
-interface Props {
-  modelValue: string[];
-  options: string[];
-  multiple?: boolean;
-}
-
-withDefaults(defineProps<Props>(), {
-  multiple: false,
-})
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void;
-}>();
-
-const optionValues = ref<Array<string>>([]);
-
-const onChange = (elem: HTMLSelectElement) => {
-  const selectedOptionList = Array.from(elem.options).filter(option => option.selected && option.value);
-  optionValues.value = selectedOptionList.map(item => item.value)
-  emit('update:modelValue', optionValues.value);
-}
-</script>
-
 <template>
   <label :class="$style.wrapper">
     <span :class="$style.label"><slot /></span>
     <select
       :value="modelValue"
-      @change="onChange(($event.target as HTMLSelectElement))"
+      @change="onChange($event.target as HTMLSelectElement)"
       :class="$style.select"
       :multiple="multiple"
     >
@@ -40,12 +13,41 @@ const onChange = (elem: HTMLSelectElement) => {
         :value="option"
         :key="option"
         :selected="optionValues.includes(option)"
-        :class="[optionValues.includes(option) && $style.option]">
+        :class="[optionValues.includes(option) && $style.option]"
+      >
         {{ option }}
       </option>
     </select>
   </label>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+interface Props {
+  modelValue: string[];
+  options: string[];
+  multiple?: boolean;
+}
+
+withDefaults(defineProps<Props>(), {
+  multiple: false,
+});
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string[]): void;
+}>();
+
+const optionValues = ref<Array<string>>([]);
+
+const onChange = (elem: HTMLSelectElement) => {
+  const selectedOptionList = Array.from(elem.options).filter(
+    option => option.selected && option.value
+  );
+  optionValues.value = selectedOptionList.map(item => item.value);
+  emit('update:modelValue', optionValues.value);
+};
+</script>
 
 <style module lang="sass">
 .wrapper

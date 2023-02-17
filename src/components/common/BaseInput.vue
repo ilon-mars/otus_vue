@@ -1,13 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  modelValue: string;
-}>();
-
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
-}>();
-</script>
-
 <template>
   <label :class="$style.wrapper">
     <span :class="$style.label"><slot /></span>
@@ -20,6 +10,16 @@ const emit = defineEmits<{
     />
   </label>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  modelValue: string;
+}>();
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void;
+}>();
+</script>
 
 <style module lang="sass">
 .wrapper

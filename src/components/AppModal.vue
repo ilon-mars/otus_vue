@@ -1,3 +1,18 @@
+<template>
+  <Teleport to="#app">
+    <Transition name="fade">
+      <div v-if="props.isOpen" :class="$style.modal">
+        <div :class="$style.slot">
+          <slot />
+        </div>
+        <button @click="emit('close')" :class="$style.closeBtn">
+          <CloseIcon />
+        </button>
+      </div>
+    </Transition>
+  </Teleport>
+</template>
+
 <script setup lang="ts">
 import { watch } from 'vue';
 import CloseIcon from '@/components/icons/CloseIcon.vue';
@@ -22,20 +37,6 @@ watch(
   { immediate: true }
 );
 </script>
-
-<template>
-  <Teleport to="#app">
-    <div v-if="props.isOpen" :class="$style.modal">
-      <div :class="$style.slot">
-        <slot />
-      </div>
-
-      <button @click="emit('close')" :class="$style.closeBtn">
-        <CloseIcon />
-      </button>
-    </div>
-  </Teleport>
-</template>
 
 <style module lang="sass">
 .modal
@@ -64,4 +65,14 @@ watch(
 .slot
   max-width: 600px
   min-height: 400px
+</style>
+
+<style lang="sass">
+.fade-enter-active,
+.fade-leave-active
+  transition: opacity .4s linear
+
+.fade-enter-from,
+.fade-leave-to
+  opacity: 0
 </style>

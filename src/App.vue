@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import MainPage from '@/components/MainPage.vue';
+import DefaultLayout from '@/layouts/DefaultLayout.vue';
 import BurgerIcon from '@/components/icons/BurgerIcon.vue';
 </script>
 
 <template>
   <Suspense>
     <template #default>
-      <MainPage />
+      <DefaultLayout />
     </template>
     <template #fallback>
       <div :class="$style.iconWrapper">

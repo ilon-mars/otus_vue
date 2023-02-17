@@ -49,8 +49,6 @@ export class CrudApiService extends ReadOnlyApiService {
   async delete(id: string) {
     const itemIndex = (data as any)[this.#resource].findIndex((item: Item) => item._id === id);
     (data as any)[this.#resource].splice(itemIndex, 1);
-
-    console.log('data', (data as any)[this.#resource])
     return data;
   }
 }

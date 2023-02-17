@@ -1,53 +1,34 @@
-<script setup lang="ts">
-import type { Burger, Restaurant } from '@/types/items';
-import { Resources } from '@/enums/resources';
-import useApi from '@/hooks/useApi';
-import burgerTemplateImg from '@/assets/img/burgerTemplateImg.png';
-
-defineProps<{
-  burgers: Burger[];
-  restaurants: Restaurant[];
-}>();
-
-const emit = defineEmits<{
-  (e: 'openModal', modalType: string): void;
-  (e: 'deleteItem'): void;
-}>();
-
-const deleteApi = await useApi(Resources.BURGERS);
-
-const deleteBurger = async (burgerId: string) => {
-  await deleteApi.$api.delete(burgerId);
-  emit('deleteItem');
-};
-</script>
-
 <template>
-  <section class="wrapper">
+  <section>
     <ul v-if="burgers.length">
       <li v-for="burger in burgers" :key="burger._id" :class="$style.burger">
-        <h2 :class="$style.title" class="h2">{{ burger.name }}</h2>
-        <img :src="burger.image ? burger.image : burgerTemplateImg" :alt="burger.name" :class="$style.img" />
-
-        <div :class="$style.ingredients">
-          <h3 class="h3" :class="$style.subtitle">Состав</h3>
-          <ul :class="$style.list">
-            <li v-for="item in burger.ingredients" :key="item" :class="$style.item">
-              {{ item }}
-            </li>
-          </ul>
-        </div>
-
-        <div :class="$style.restaurants">
-          <h3 class="h3" :class="$style.subtitle">Рестораны, где их готовят</h3>
-          <ul>
-            <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
-              {{ item }}
-            </li>
-          </ul>
-        </div>
-
-        <button :class="$style.deleteBtn" @click="deleteBurger(burger._id!)">Удалить</button>
+        <router-link
+          :to="{ name: 'BurgerPage', params: { id: burger._id } }"
+          :class="$style.burger"
+        >
+          <h2 :class="$style.title" class="h2">{{ burger.name }}</h2>
+          <img
+            :src="burger.image ? burger.image : burgerTemplateImg"
+            :alt="burger.name"
+            :class="$style.img"
+          />
+          <div :class="$style.ingredients">
+            <h3 class="h3" :class="$style.subtitle">Состав</h3>
+            <ul :class="$style.list">
+              <li v-for="item in burger.ingredients" :key="item" :class="$style.item">
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+          <div :class="$style.restaurants">
+            <h3 class="h3" :class="$style.subtitle">Рестораны, где можно попробовать</h3>
+            <ul>
+              <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
+                {{ item }}
+              </li>
+            </ul>
+          </div>
+        </router-link>
       </li>
 
       <li :class="$style.burgerTemplate">
@@ -66,6 +47,21 @@ const deleteBurger = async (burgerId: string) => {
   </section>
 </template>
 
+<script setup lang="ts">
+import type { Burger, Restaurant } from '@/types/items';
+import { Resources } from '@/enums/resources';
+import burgerTemplateImg from '@/assets/img/burgerTemplateImg.png';
+
+defineProps<{
+  burgers: Burger[];
+  restaurants: Restaurant[];
+}>();
+
+const emit = defineEmits<{
+  (e: 'openModal', modalType: string): void;
+}>();
+</script>
+
 <style module lang="sass">
 @import '@/assets/styles/_animations.sass'
 @import '@/assets/styles/_functions.sass'
@@ -77,6 +73,7 @@ const deleteBurger = async (burgerId: string) => {
   gap: 10px
   margin-bottom: 30px
   position: relative
+  color: inherit
 
   &:hover
     .deleteBtn
