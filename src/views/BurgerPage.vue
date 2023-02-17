@@ -14,7 +14,7 @@
       <h3 class="h3" :class="$style.subtitle">Рестораны, где его можно попробовать</h3>
       <ul v-if="burger.restaurants">
         <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
-          {{ restaurantName(item) }}
+          {{ item }}
         </li>
       </ul>
       <div v-else>Знаете ресторан, где готовят этот бургер? <button>Добавьте его</button></div>
@@ -45,8 +45,6 @@ const emit = defineEmits<{
 const route = useRoute();
 const router = useRouter();
 const burger = computed(() => data.burgers.find(burger => burger._id === route.params.id));
-
-const restaurantName = (itemId: string) => data.restaurants.find(elem => elem._id === itemId)?.name;
 
 const deleteApi = await useApi(Resources.BURGERS);
 
