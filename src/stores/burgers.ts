@@ -17,14 +17,22 @@ export const useBurgerStore = defineStore('burgers', {
 
     async addBurger(burger: Burger) {
       const newBurger = { ...burger, _id: generateId() };
-      this.burgers.push(newBurger);
-      await api.$api.post(newBurger);
+
+      try {
+        this.burgers = (await api.$api.post(newBurger)) as Burger[];
+      } catch (error) {
+        console.log('🥲', error);
+      }
     },
 
     async deleteBurger(burgerId: string) {
-      const itemIndex = this.burgers.findIndex((item: Burger) => item._id === burgerId);
-      this.burgers.splice(itemIndex, 1);
-      await api.$api.delete(burgerId);
+      try {
+        const itemIndex = this.burgers.findIndex((item: Burger) => item._id === burgerId);
+        this.burgers.splice(itemIndex, 1);
+        await api.$api.delete(burgerId);
+      } catch (error) {
+        console.log('🥲', error);
+      }
     },
   },
 });

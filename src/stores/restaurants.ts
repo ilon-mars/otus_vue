@@ -20,8 +20,12 @@ export const useRestaurantStore = defineStore('restaurants', {
 
     async addRestaurant(restaurant: Restaurant) {
       const newRestaurant = { ...restaurant, _id: generateId() };
-      this.restaurants.push(newRestaurant);
-      await api.$api.post(restaurant);
+
+      try {
+        this.restaurants = (await api.$api.post(newRestaurant)) as Restaurant[];
+      } catch (error) {
+        console.log('🥲', error);
+      }
     },
   },
 });

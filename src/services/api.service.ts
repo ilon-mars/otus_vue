@@ -1,7 +1,6 @@
-import axios from '@/plugins/axios';
 import type { AxiosRequestConfig } from 'axios';
 import type { Burger, Restaurant } from '@/types/items';
-import data, { addItem, updateItem, removeItem } from '@/store';
+import { query, addItem, updateItem, removeItem } from '@/store';
 
 export type AllData = Burger[] | Restaurant[];
 export type Item = Burger | Restaurant;
@@ -17,14 +16,13 @@ export class ReadOnlyApiService extends BaseApiService {
   }
 
   async query(config: AxiosRequestConfig | {} = {}) {
-    const { data } = await axios.get(this.#resource, config);
-    return data;
+    return query(this.#resource, config);
   }
 
-  async get(id: string, config: AxiosRequestConfig | {} = {}) {
-    const { data } = await axios.get(`${this.#resource}/${id}`, config);
-    return data;
-  }
+  // async get(id: string, config: AxiosRequestConfig | {} = {}) {
+  // const { data } = await axios.get(`${this.#resource}/${id}`, config);
+  // return data;
+  // }
 }
 
 export class CrudApiService extends ReadOnlyApiService {
@@ -36,17 +34,14 @@ export class CrudApiService extends ReadOnlyApiService {
   }
 
   async post(item: Item) {
-    addItem(item, this.#resource);
-    return data;
+    return await addItem(item, this.#resource);
   }
 
   async put(editedItem: Item) {
-    updateItem(editedItem, this.#resource);
-    return data;
+    return updateItem(editedItem, this.#resource);
   }
 
   async delete(id: string) {
-    removeItem(id, this.#resource);
-    return data;
+    return removeItem(id, this.#resource);
   }
 }
