@@ -8,7 +8,10 @@ import { generateId } from '@/utils/helpers';
 const api = await useApi(Resources.RESTAURANTS);
 
 export const useRestaurantStore = defineStore('restaurants', {
-  state: () => ({ restaurants: useStorage('restaurants', [] as Restaurant[]) }),
+  state: () => ({
+    restaurants: useStorage('restaurants', [] as Restaurant[]),
+    isLoading: false,
+  }),
 
   actions: {
     async loadRestaurants() {
