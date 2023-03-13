@@ -5,7 +5,7 @@ import { Resources } from '@/enums/resources';
 import useApi from '@/hooks/useApi';
 import { generateId } from '@/utils/helpers';
 
-const api = await useApi(Resources.RESTAURANTS);
+const api = useApi(Resources.RESTAURANTS);
 
 export const useRestaurantStore = defineStore('restaurants', {
   state: () => ({

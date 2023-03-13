@@ -5,7 +5,7 @@ import { Resources } from '@/enums/resources';
 import useApi from '@/hooks/useApi';
 import { generateId } from '@/utils/helpers';
 
-const api = await useApi(Resources.BURGERS);
+const api = useApi(Resources.BURGERS);
 
 export const useBurgerStore = defineStore('burgers', {
   state: () => ({ burgers: useStorage('burgers', [] as Burger[]) }),
