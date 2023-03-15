@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 import BurgerListPage from '@/views/BurgerListPage.vue';
 import { useRestaurantStore } from '@/stores/restaurants';
 
@@ -8,17 +8,17 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: Resources.BURGERS,
+      name: ResourceEnum.BURGERS,
       component: BurgerListPage,
     },
     {
-      path: `/${Resources.BURGERS}/:id`,
+      path: `/${ResourceEnum.BURGERS}/:id`,
       name: 'BurgerPage',
       component: () => import('@/views/BurgerPage.vue'),
     },
     {
-      path: `/${Resources.RESTAURANTS}`,
-      name: Resources.RESTAURANTS,
+      path: `/${ResourceEnum.RESTAURANTS}`,
+      name: ResourceEnum.RESTAURANTS,
       component: () => import('@/views/RestaurantListPage.vue'),
       beforeEnter: async () => {
         const restaurantsStore = useRestaurantStore();
@@ -28,7 +28,7 @@ const router = createRouter({
         }
       },
     },
-    { path: '/:catchAll(.*)', redirect: { name: Resources.BURGERS } },
+    { path: '/:catchAll(.*)', redirect: { name: ResourceEnum.BURGERS } },
   ],
 });
 

@@ -16,7 +16,7 @@
 
   <AppModal :isOpen="isModalOpen" @close="closeModal">
     <component
-      :is="modalType === Resources.BURGERS ? AddBurgerForm : AddRestaurantForm"
+      :is="modalType === ResourceEnum.BURGERS ? AddBurgerForm : AddRestaurantForm"
       @submit="submitForm"
     />
   </AppModal>
@@ -30,15 +30,14 @@ import AddBurgerForm from '@/components/Burgers/AddBurgerForm.vue';
 import AddRestaurantForm from '@/components/Restaurants/AddRestaurantForm.vue';
 import AppModal from '@/components/AppModal.vue';
 import { useBurgerStore } from '@/stores/burgers';
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 
 const burgersStore = useBurgerStore();
 
-// await restaurantsStore.loadRestaurants();
 await burgersStore.loadBurgers();
 
 const isModalOpen = ref(false);
-const modalType = ref(Resources.BURGERS as string);
+const modalType = ref(ResourceEnum.BURGERS as string);
 
 const openModal = (type: string) => {
   modalType.value = type;

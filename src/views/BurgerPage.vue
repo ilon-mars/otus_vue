@@ -24,7 +24,7 @@
 
   <div v-else>
     Кажется, произошла ошибка,
-    <router-link :to="{ name: Resources.BURGERS }" :class="$style.goBack"
+    <router-link :to="{ name: ResourceEnum.BURGERS }" :class="$style.goBack"
       >вернуться на главную</router-link
     >?
   </div>
@@ -35,7 +35,7 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useBurgerStore } from '@/stores/burgers';
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
@@ -55,7 +55,7 @@ const burger = computed(() => burgers.value.find(burger => burger._id === route.
 const deleteBurger = async (burgerId: string) => {
   await removeBurger(burgerId);
   emit('deleteItem');
-  router.push({ name: Resources.BURGERS });
+  router.push({ name: ResourceEnum.BURGERS });
 };
 </script>
 
