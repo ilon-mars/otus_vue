@@ -1,26 +1,9 @@
-const OPTIONS = ['option 1', 'option 2', 'option 3'];
+import { SearchParam } from '@/types/baseSearchParams';
 
-export const checkboxValues = {
-  booleanValue: false,
-  stringArrValue: [] as string[],
-  value: 'value',
-};
+export const OPTIONS = ['option 1', 'option 2', 'option 3'];
+export const SEARCH_DATA: SearchParam[] = [{ name: 'Item 1' }, { name: 'Theme 2' }];
 
-export const inputValues = {
-  modelValue: '',
-  testValue: 'test',
-  expectedValue: 'test',
-};
-
-export const selectValues = {
-  modelValue: [] as string[],
-  emptyOptions: [] as string[],
-  options: OPTIONS,
-  expectedValue: OPTIONS[0],
-  expectedMultipleValue: [OPTIONS[0], OPTIONS[2]],
-};
-
-export const inputSlot = {
+export const formElemsSlots = {
   slotValue: 'Default',
   expectedValue: '<span class="label">Default</span>',
 };
