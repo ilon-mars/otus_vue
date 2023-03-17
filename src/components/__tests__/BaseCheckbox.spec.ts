@@ -2,6 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import BaseCheckbox from '@/components/common/BaseCheckbox.vue';
 import { formElemsSlots } from '@/utils/testDataMocks';
+import { TestCaseParams } from '@/types/testCaseParams';
 
 let wrapper: VueWrapper;
 
@@ -17,7 +18,7 @@ const DEFAULT_PROPS = {
   modelValue: MODEL_DEFAULT_VALUE.boolean,
 } as const;
 
-const booleanValueCheck = {
+const booleanValueCheck: TestCaseParams = {
   params: {
     props: {
       ...DEFAULT_PROPS,
@@ -28,7 +29,7 @@ const booleanValueCheck = {
   expectedResult: !MODEL_DEFAULT_VALUE.boolean,
 };
 
-const arrayValueCheck = {
+const arrayValueCheck: TestCaseParams = {
   params: {
     props: {
       value: DEFAULT_VALUE,
@@ -40,9 +41,9 @@ const arrayValueCheck = {
   expectedResult: DEFAULT_VALUE,
 };
 
-const emitCheck = { ...booleanValueCheck, expectedResult: 'update:modelValue' };
+const emitCheck: TestCaseParams = { ...booleanValueCheck, expectedResult: 'update:modelValue' };
 
-const slotRenderCheck = {
+const slotRenderCheck: TestCaseParams = {
   params: {
     props: DEFAULT_PROPS,
     slots: {

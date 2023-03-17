@@ -2,6 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import BaseSelect from '@/components/common/BaseSelect.vue';
 import { formElemsSlots, OPTIONS } from '@/utils/testDataMocks';
+import { TestCaseParams } from '@/types/testCaseParams';
 
 let wrapper: VueWrapper;
 
@@ -13,7 +14,7 @@ const DEFAULT_PROPS = {
   'onUpdate:modelValue': (e: string[]) => wrapper.setProps({ modelValue: e }),
 } as const;
 
-const singleOptionCheck = {
+const singleOptionCheck: TestCaseParams = {
   params: {
     props: DEFAULT_PROPS,
   },
@@ -21,7 +22,7 @@ const singleOptionCheck = {
   expectedResult: OPTIONS[0],
 };
 
-const multipleOptionsCheck = {
+const multipleOptionsCheck: TestCaseParams = {
   params: {
     props: {
       ...DEFAULT_PROPS,
@@ -32,7 +33,7 @@ const multipleOptionsCheck = {
   expectedResult: [OPTIONS[0], OPTIONS[2]],
 };
 
-const slotRenderCheck = {
+const slotRenderCheck: TestCaseParams = {
   params: {
     props: DEFAULT_PROPS,
     slots: {
@@ -42,7 +43,7 @@ const slotRenderCheck = {
   expectedResult: formElemsSlots.expectedValue,
 };
 
-const emitCheck = { ...singleOptionCheck, expectedResult: 'update:modelValue' };
+const emitCheck: TestCaseParams = { ...singleOptionCheck, expectedResult: 'update:modelValue' };
 
 describe('BaseSelect', () => {
   it('renders slot', () => {

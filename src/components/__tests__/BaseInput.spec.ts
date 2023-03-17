@@ -2,13 +2,14 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import BaseInput from '@/components/common/BaseInput.vue';
 import { formElemsSlots } from '@/utils/testDataMocks';
+import { TestCaseParams } from '@/types/testCaseParams';
 
 let wrapper: VueWrapper;
 
 const DEFAULT_VALUE = 'test value';
 const MODEL_DEFAULT_VALUE = '';
 
-const slotRenderCheck = {
+const slotRenderCheck: TestCaseParams = {
   params: {
     props: {
       modelValue: MODEL_DEFAULT_VALUE,
@@ -20,7 +21,7 @@ const slotRenderCheck = {
   expectedResult: formElemsSlots.expectedValue,
 };
 
-const inputValueCheck = {
+const inputValueCheck: TestCaseParams = {
   params: {
     props: {
       modelValue: MODEL_DEFAULT_VALUE,
@@ -31,7 +32,7 @@ const inputValueCheck = {
   expectedResult: DEFAULT_VALUE,
 };
 
-const emitCheck = { ...inputValueCheck, expectedResult: 'update:modelValue' };
+const emitCheck: TestCaseParams = { ...inputValueCheck, expectedResult: 'update:modelValue' };
 
 describe('BaseInput', () => {
   it('renders slot', () => {
