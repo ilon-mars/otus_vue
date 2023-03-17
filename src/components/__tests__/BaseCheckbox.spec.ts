@@ -1,63 +1,84 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import BaseCheckbox from '@/components/common/BaseCheckbox.vue';
-import { checkboxValues, inputSlot } from '@/utils/testDataMocks';
+import { formElemsSlots } from '@/utils/testDataMocks';
 
 let wrapper: VueWrapper;
 
-const booleanModelValueCheck = {
-  props: {
-    value: checkboxValues.value,
-    modelValue: checkboxValues.booleanValue,
-    'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
+const DEFAULT_VALUE = 'value';
+
+const MODEL_DEFAULT_VALUE = {
+  boolean: false,
+  stringArray: [] as string[],
+} as const;
+
+const slotRenderCheck = {
+  params: {
+    props: {
+      value: DEFAULT_VALUE,
+      modelValue: MODEL_DEFAULT_VALUE.boolean,
+    },
+    slots: {
+      default: formElemsSlots.slotValue,
+    },
   },
+  expectedResult: formElemsSlots.expectedValue,
 };
 
-const stringArrModelValueCheck = {
-  props: {
-    value: checkboxValues.value,
-    modelValue: checkboxValues.stringArrValue,
-    'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
+const booleanValueCheck = {
+  params: {
+    props: {
+      value: DEFAULT_VALUE,
+      modelValue: MODEL_DEFAULT_VALUE.boolean,
+      'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
+    },
   },
+  testValue: !MODEL_DEFAULT_VALUE.boolean,
+  expectedResult: !MODEL_DEFAULT_VALUE.boolean,
 };
 
-const slotCheck = {
-  props: {
-    value: checkboxValues.value,
-    modelValue: checkboxValues.booleanValue,
+const emitCheck = { ...booleanValueCheck, expectedResult: 'update:modelValue' };
+
+const arrayValueCheck = {
+  params: {
+    props: {
+      value: DEFAULT_VALUE,
+      modelValue: MODEL_DEFAULT_VALUE.stringArray,
+      'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
+    },
   },
-  slots: {
-    default: inputSlot.slotValue,
-  },
+  testValue: DEFAULT_VALUE,
+  expectedResult: DEFAULT_VALUE,
 };
 
 describe('BaseCheckbox', () => {
-  it('boolean modelValue should be updated', async () => {
-    wrapper = mount(BaseCheckbox, booleanModelValueCheck);
-
-    await wrapper.find('input').setValue(!checkboxValues.booleanValue);
-    expect(wrapper.props('modelValue')).toBe(!checkboxValues.booleanValue);
-  });
-
-  it('string array modelValue should be updated', async () => {
-    wrapper = mount(BaseCheckbox, stringArrModelValueCheck);
-
-    await wrapper.find('input').setValue(checkboxValues.value);
-    expect(wrapper.props('modelValue')).toContain(checkboxValues.value);
-    expect(wrapper.props('modelValue')).toBeTypeOf('object');
-    expect(Array.isArray([wrapper.props('modelValue')])).toBe(true);
-  });
-
   it('renders slot', () => {
-    wrapper = mount(BaseCheckbox, slotCheck);
+    wrapper = mount(BaseCheckbox, slotRenderCheck.params);
 
-    expect(wrapper.html()).toContain(inputSlot.expectedValue);
+    expect(wrapper.html()).toContain(slotRenderCheck.expectedResult);
   });
 
   it('emits update:modelValue', async () => {
-    wrapper = mount(BaseCheckbox, booleanModelValueCheck);
+    wrapper = mount(BaseCheckbox, emitCheck.params);
 
-    await wrapper.find('input').setValue(!checkboxValues.booleanValue);
-    expect(wrapper.emitted()).toHaveProperty('update:modelValue');
+    await wrapper.find('input').setValue(emitCheck.testValue);
+    expect(wrapper.emitted()).toHaveProperty(emitCheck.expectedResult);
+  });
+
+  it('changes checkbox boolean value to opposite', async () => {
+    wrapper = mount(BaseCheckbox, booleanValueCheck.params);
+
+    await wrapper.find('input').setValue(booleanValueCheck.testValue);
+    expect(wrapper.props('modelValue')).toBe(booleanValueCheck.expectedResult);
+  });
+
+  it('returns an array of checked strings ', async () => {
+    wrapper = mount(BaseCheckbox, arrayValueCheck.params);
+
+    await wrapper.find('input').setValue(arrayValueCheck.testValue);
+    expect(wrapper.props('modelValue')).toContain(arrayValueCheck.expectedResult);
+    // checks if modelValue is an Array
+    expect(wrapper.props('modelValue')).toBeTypeOf('object');
+    expect(Array.isArray([wrapper.props('modelValue')])).toBe(true);
   });
 });
