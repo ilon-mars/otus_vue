@@ -8,7 +8,7 @@ import Ingredients from '@/enums/ingredients';
 let wrapper: VueWrapper;
 
 const pinia = createTestingPinia({ createSpy: vi.fn });
-const burgerStore = useBurgerStore(pinia);
+const store = useBurgerStore(pinia);
 
 const mountOptions = {
   global: {
@@ -55,7 +55,7 @@ describe('AddBurgerForm', () => {
     await nameInput.setValue('Name');
     await wrapper.find('form').trigger('submit');
 
-    expect(burgerStore.addBurger).toHaveBeenCalledWith({
+    expect(store.addBurger).toHaveBeenCalledWith({
       name: 'Name',
       image: '',
       ingredients: [Ingredients.BUN],
