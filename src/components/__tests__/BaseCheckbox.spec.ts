@@ -53,4 +53,11 @@ describe('BaseCheckbox', () => {
 
     expect(wrapper.html()).toContain(inputSlot.expectedValue);
   });
+
+  it('emits update:modelValue', async () => {
+    wrapper = mount(BaseCheckbox, booleanModelValueCheck);
+
+    await wrapper.find('input').setValue(!checkboxValues.booleanValue);
+    expect(wrapper.emitted()).toHaveProperty('update:modelValue');
+  });
 });

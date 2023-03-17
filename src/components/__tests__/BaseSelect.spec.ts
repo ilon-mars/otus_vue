@@ -50,7 +50,7 @@ describe('BaseSelect', () => {
     expect(Array.isArray([wrapper.props('modelValue')])).toBe(true);
   });
 
-  it.only('selects multiple options', async () => {
+  it('selects multiple options', async () => {
     wrapper = mount(BaseSelect, multipleOptionsCheck);
 
     const select = wrapper.get('select');
@@ -59,5 +59,12 @@ describe('BaseSelect', () => {
     expect(wrapper.props('modelValue')).toEqual(selectValues.expectedMultipleValue);
     expect(wrapper.props('modelValue')).toBeTypeOf('object');
     expect(Array.isArray([wrapper.props('modelValue')])).toBe(true);
+  });
+
+  it('emits update:modelValue', async () => {
+    wrapper = mount(BaseSelect, singleOptionsCheck);
+
+    await wrapper.get('select').setValue(selectValues.options[0]);
+    expect(wrapper.emitted()).toHaveProperty('update:modelValue');
   });
 });

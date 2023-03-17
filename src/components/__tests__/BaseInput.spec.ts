@@ -29,4 +29,9 @@ describe('BaseInput', () => {
   it('renders slot', () => {
     expect(wrapper.html()).toContain(inputSlot.expectedValue);
   });
+
+  it('emits update:modelValue', async () => {
+    await wrapper.find('input').setValue(inputValues.testValue);
+    expect(wrapper.emitted()).toHaveProperty('update:modelValue');
+  });
 });
