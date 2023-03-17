@@ -4,7 +4,13 @@ export const checkboxValues = {
   value: 'value',
 };
 
-export const inputsSlot = {
+export const inputValues = {
+  modelValue: '',
+  testValue: 'test',
+  expectedValue: 'test',
+};
+
+export const inputSlot = {
   slotValue: 'Default',
   expectedValue: '<span class="label">Default</span>',
 };
