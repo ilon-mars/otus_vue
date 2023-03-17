@@ -26,6 +26,6 @@ describe('BaseInput', () => {
   });
 
   it('renders slot', () => {
-    expect(wrapper.html()).toContain('Default');
+    expect(wrapper.html()).toContain('<span class="label">Default</span>');
   });
 });

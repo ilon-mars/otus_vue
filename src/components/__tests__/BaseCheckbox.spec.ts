@@ -50,6 +50,6 @@ describe('BaseCheckbox', () => {
   it('renders slot', () => {
     wrapper = mount(BaseCheckbox, slotCheck);
 
-    expect(wrapper.html()).toContain('Default');
+    expect(wrapper.html()).toContain('<span class="label">Default</span>');
   });
 });
