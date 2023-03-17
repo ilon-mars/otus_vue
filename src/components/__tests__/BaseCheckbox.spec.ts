@@ -12,32 +12,21 @@ const MODEL_DEFAULT_VALUE = {
   stringArray: [] as string[],
 } as const;
 
-const slotRenderCheck = {
-  params: {
-    props: {
-      value: DEFAULT_VALUE,
-      modelValue: MODEL_DEFAULT_VALUE.boolean,
-    },
-    slots: {
-      default: formElemsSlots.slotValue,
-    },
-  },
-  expectedResult: formElemsSlots.expectedValue,
-};
+const DEFAULT_PROPS = {
+  value: DEFAULT_VALUE,
+  modelValue: MODEL_DEFAULT_VALUE.boolean,
+} as const;
 
 const booleanValueCheck = {
   params: {
     props: {
-      value: DEFAULT_VALUE,
-      modelValue: MODEL_DEFAULT_VALUE.boolean,
+      ...DEFAULT_PROPS,
       'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
     },
   },
   testValue: !MODEL_DEFAULT_VALUE.boolean,
   expectedResult: !MODEL_DEFAULT_VALUE.boolean,
 };
-
-const emitCheck = { ...booleanValueCheck, expectedResult: 'update:modelValue' };
 
 const arrayValueCheck = {
   params: {
@@ -49,6 +38,18 @@ const arrayValueCheck = {
   },
   testValue: DEFAULT_VALUE,
   expectedResult: DEFAULT_VALUE,
+};
+
+const emitCheck = { ...booleanValueCheck, expectedResult: 'update:modelValue' };
+
+const slotRenderCheck = {
+  params: {
+    props: DEFAULT_PROPS,
+    slots: {
+      default: formElemsSlots.slotValue,
+    },
+  },
+  expectedResult: formElemsSlots.expectedValue,
 };
 
 describe('BaseCheckbox', () => {
