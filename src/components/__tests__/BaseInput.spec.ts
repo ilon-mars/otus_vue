@@ -1,37 +1,56 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import BaseInput from '@/components/common/BaseInput.vue';
-import { inputValues, inputSlot } from '@/utils/testDataMocks';
+import { formElemsSlots } from '@/utils/testDataMocks';
 
 let wrapper: VueWrapper;
 
-const mountOptions = {
-  props: {
-    modelValue: inputValues.modelValue,
-    'onUpdate:modelValue': (e: string) => wrapper.setProps({ modelValue: e }),
-  },
+const DEFAULT_VALUE = 'test value';
+const MODEL_DEFAULT_VALUE = '';
 
-  slots: {
-    default: inputSlot.slotValue,
+const slotRenderCheck = {
+  params: {
+    props: {
+      modelValue: MODEL_DEFAULT_VALUE,
+    },
+    slots: {
+      default: formElemsSlots.slotValue,
+    },
   },
+  expectedResult: formElemsSlots.expectedValue,
 };
 
+const inputValueCheck = {
+  params: {
+    props: {
+      modelValue: MODEL_DEFAULT_VALUE,
+      'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
+    },
+  },
+  testValue: DEFAULT_VALUE,
+  expectedResult: DEFAULT_VALUE,
+};
+
+const emitCheck = { ...inputValueCheck, expectedResult: 'update:modelValue' };
+
 describe('BaseInput', () => {
-  beforeEach(() => {
-    wrapper = mount(BaseInput, mountOptions);
-  });
-
-  it('modelValue should be updated', async () => {
-    await wrapper.find('input').setValue(inputValues.testValue);
-    expect(wrapper.props('modelValue')).toBe(inputValues.expectedValue);
-  });
-
   it('renders slot', () => {
-    expect(wrapper.html()).toContain(inputSlot.expectedValue);
+    wrapper = mount(BaseInput, slotRenderCheck.params);
+
+    expect(wrapper.html()).toContain(slotRenderCheck.expectedResult);
   });
 
   it('emits update:modelValue', async () => {
-    await wrapper.find('input').setValue(inputValues.testValue);
-    expect(wrapper.emitted()).toHaveProperty('update:modelValue');
+    wrapper = mount(BaseInput, emitCheck.params);
+
+    await wrapper.find('input').setValue(emitCheck.testValue);
+    expect(wrapper.emitted()).toHaveProperty(emitCheck.expectedResult);
+  });
+
+  it('modelValue should be updated', async () => {
+    wrapper = mount(BaseInput, inputValueCheck.params);
+
+    await wrapper.find('input').setValue(inputValueCheck.testValue);
+    expect(wrapper.props('modelValue')).toBe(inputValueCheck.expectedResult);
   });
 });
