@@ -40,7 +40,7 @@ describe('AppHeader', () => {
     });
   });
 
-  it.only(`navigates to ${ResourceEnum.BURGERS} page`, async () => {
+  it(`navigates to ${ResourceEnum.BURGERS} page`, async () => {
     const push = vi.spyOn(router, 'push');
     vi.mocked(burgerStore.loadBurgers).mockResolvedValue();
 
