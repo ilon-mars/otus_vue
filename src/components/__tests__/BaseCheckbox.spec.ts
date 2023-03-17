@@ -1,32 +1,33 @@
 import { mount, VueWrapper } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
 import BaseCheckbox from '@/components/common/BaseCheckbox.vue';
+import { checkboxValues, inputSlot } from '@/utils/testDataMocks';
 
 let wrapper: VueWrapper;
 
 const booleanModelValueCheck = {
   props: {
-    modelValue: false,
+    value: checkboxValues.value,
+    modelValue: checkboxValues.booleanValue,
     'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
-    value: 'value',
   },
 };
 
 const stringArrModelValueCheck = {
   props: {
-    modelValue: [] as string[],
+    value: checkboxValues.value,
+    modelValue: checkboxValues.stringArrValue,
     'onUpdate:modelValue': (e: string[] | boolean) => wrapper.setProps({ modelValue: e }),
-    value: 'value',
   },
 };
 
 const slotCheck = {
   props: {
-    modelValue: false,
-    value: 'value',
+    value: checkboxValues.value,
+    modelValue: checkboxValues.booleanValue,
   },
   slots: {
-    default: 'Default',
+    default: inputSlot.slotValue,
   },
 };
 
@@ -34,15 +35,15 @@ describe('BaseCheckbox', () => {
   it('boolean modelValue should be updated', async () => {
     wrapper = mount(BaseCheckbox, booleanModelValueCheck);
 
-    await wrapper.find('input').setValue(true);
-    expect(wrapper.props('modelValue')).toBe(true);
+    await wrapper.find('input').setValue(!checkboxValues.booleanValue);
+    expect(wrapper.props('modelValue')).toBe(!checkboxValues.booleanValue);
   });
 
   it('string array modelValue should be updated', async () => {
     wrapper = mount(BaseCheckbox, stringArrModelValueCheck);
 
-    await wrapper.find('input').setValue('value');
-    expect(wrapper.props('modelValue')).toContain('value');
+    await wrapper.find('input').setValue(checkboxValues.value);
+    expect(wrapper.props('modelValue')).toContain(checkboxValues.value);
     expect(wrapper.props('modelValue')).toBeTypeOf('object');
     expect(Array.isArray([wrapper.props('modelValue')])).toBe(true);
   });
@@ -50,6 +51,6 @@ describe('BaseCheckbox', () => {
   it('renders slot', () => {
     wrapper = mount(BaseCheckbox, slotCheck);
 
-    expect(wrapper.html()).toContain('<span class="label">Default</span>');
+    expect(wrapper.html()).toContain(inputSlot.expectedValue);
   });
 });
