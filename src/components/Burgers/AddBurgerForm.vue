@@ -56,19 +56,20 @@ const onSubmit = async () => {
 
   if (
     !burgerName.value ||
-    !burgerImgUrl.value ||
     ingredients.length === 0 ||
-    (!burgerPlace.value && restaurants.length)
+    (!burgerPlace.value.length && restaurants.length)
   ) {
-    const burger: Burger = {
-      name: burgerName.value,
-      image: burgerImgUrl.value,
-      ingredients: ingredients,
-      restaurants: [...burgerPlace.value],
-    };
-
-    await burgersStore.addBurger(burger);
+    return;
   }
+
+  const burger: Burger = {
+    name: burgerName.value,
+    image: burgerImgUrl.value,
+    ingredients: ingredients,
+    restaurants: [...burgerPlace.value],
+  };
+
+  await burgersStore.addBurger(burger);
 
   burgerName.value = '';
   burgerImgUrl.value = '';
