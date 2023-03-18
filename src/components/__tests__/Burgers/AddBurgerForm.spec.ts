@@ -5,6 +5,7 @@ import AddBurgerForm from '@/components/Burgers/AddBurgerForm.vue';
 import { useBurgerStore } from '@/stores/burgers';
 import Ingredients from '@/enums/ingredients';
 import { useRestaurantStore } from '@/stores/restaurants';
+import { RESTAURANTS } from '@/utils/testDataMocks';
 
 let wrapper: VueWrapper;
 
@@ -59,29 +60,29 @@ const formSubmitCheck = [
   {
     name: 'Name',
     ingredients: [Ingredients.BUN],
-    placesList: ['cafe'],
-    restaurantList: [{ name: 'cafe', address: 'street', menu: [] }],
+    placesList: [RESTAURANTS[0].name],
+    restaurantList: RESTAURANTS,
     submitEmitValue: 1,
   },
   {
     name: '',
     ingredients: [Ingredients.BUN],
-    placesList: ['cafe'],
-    restaurantList: [{ name: 'cafe', address: 'street', menu: [] }],
+    placesList: [RESTAURANTS[0].name],
+    restaurantList: RESTAURANTS,
     submitEmitValue: 0,
   },
   {
     name: 'Name',
     ingredients: [],
-    placesList: ['cafe'],
-    restaurantList: [{ name: 'cafe', address: 'street', menu: [] }],
+    placesList: [RESTAURANTS[0].name],
+    restaurantList: RESTAURANTS,
     submitEmitValue: 0,
   },
   {
     name: '',
     ingredients: [],
-    placesList: ['cafe'],
-    restaurantList: [{ name: 'cafe', address: 'street', menu: [] }],
+    placesList: [RESTAURANTS[0].name],
+    restaurantList: RESTAURANTS,
     submitEmitValue: 0,
   },
 ];
