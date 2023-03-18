@@ -4,6 +4,7 @@ import { createTestingPinia } from '@pinia/testing';
 import AddRestaurantForm from '@/components/Restaurants/AddRestaurantForm.vue';
 import { useRestaurantStore } from '@/stores/restaurants';
 import { useBurgerStore } from '@/stores/burgers';
+import { BURGERS } from '@/utils/testDataMocks';
 
 let wrapper: VueWrapper;
 
@@ -57,29 +58,29 @@ const formSubmitCheck = [
   {
     name: 'Name',
     address: 'Address',
-    menu: ['burger'],
-    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    menu: [BURGERS[0].name],
+    burgerList: BURGERS,
     submitEmitValue: 1,
   },
   {
     name: '',
     address: 'Address',
-    menu: ['burger'],
-    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    menu: [BURGERS[0].name],
+    burgerList: BURGERS,
     submitEmitValue: 0,
   },
   {
     name: 'Name',
     address: '',
-    menu: ['burger'],
-    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    menu: [BURGERS[0].name],
+    burgerList: BURGERS,
     submitEmitValue: 0,
   },
   {
     name: '',
     address: '',
-    menu: ['burger'],
-    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    menu: [BURGERS[0].name],
+    burgerList: BURGERS,
     submitEmitValue: 0,
   },
 ];
