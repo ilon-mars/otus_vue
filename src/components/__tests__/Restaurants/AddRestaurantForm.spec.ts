@@ -1,13 +1,15 @@
 import { mount, VueWrapper } from '@vue/test-utils';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
 import AddRestaurantForm from '@/components/Restaurants/AddRestaurantForm.vue';
 import { useRestaurantStore } from '@/stores/restaurants';
+import { useBurgerStore } from '@/stores/burgers';
 
 let wrapper: VueWrapper;
 
 const pinia = createTestingPinia({ createSpy: vi.fn });
-const store = useRestaurantStore(pinia);
+const restaurantStore = useRestaurantStore(pinia);
+const burgerStore = useBurgerStore(pinia);
 
 const mountOptions = {
   global: {
@@ -23,9 +25,72 @@ const renderElementsCheck = {
   submitBtn: 'Добавить',
 };
 
+const formSubmitCheck = [
+  {
+    name: 'Name',
+    address: '',
+    menu: [],
+    burgerList: [],
+    submitEmitValue: 0,
+  },
+  {
+    name: '',
+    address: '',
+    menu: [],
+    burgerList: [],
+    submitEmitValue: 0,
+  },
+  {
+    name: 'Name',
+    address: 'Address',
+    menu: [],
+    burgerList: [],
+    submitEmitValue: 1,
+  },
+  {
+    name: '',
+    address: 'Address',
+    menu: [],
+    burgerList: [],
+    submitEmitValue: 0,
+  },
+  {
+    name: 'Name',
+    address: 'Address',
+    menu: ['burger'],
+    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    submitEmitValue: 1,
+  },
+  {
+    name: '',
+    address: 'Address',
+    menu: ['burger'],
+    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    submitEmitValue: 0,
+  },
+  {
+    name: 'Name',
+    address: '',
+    menu: ['burger'],
+    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    submitEmitValue: 0,
+  },
+  {
+    name: '',
+    address: '',
+    menu: ['burger'],
+    burgerList: [{ name: 'burger', image: '', ingredients: [], restaurants: [] }],
+    submitEmitValue: 0,
+  },
+];
+
 describe('AddRestaurantForm', () => {
   beforeEach(() => {
     wrapper = mount(AddRestaurantForm, mountOptions);
+  });
+
+  afterEach(() => {
+    burgerStore.burgers = [];
   });
 
   it('renders all elements', () => {
@@ -37,26 +102,38 @@ describe('AddRestaurantForm', () => {
     expect(wrapper.html()).toContain(renderElementsCheck.submitBtn);
   });
 
-  it('submits form only with filled name and address', async () => {
-    const nameInput = wrapper.findAllComponents({ name: 'BaseInput' })[0].get('input');
-    const addressInput = wrapper.findAllComponents({ name: 'BaseInput' })[1].get('input');
+  it.each(formSubmitCheck)(
+    `form with filled
+      - name: $name,
+      - address: $address,
+      - menu: $menu,
+      - burgers: $burgerList
+      - submits: $submitEmitValue`,
+    async ({ name, address, menu, burgerList, submitEmitValue }) => {
+      burgerStore.burgers = burgerList;
 
-    await nameInput.setValue('Name');
-    await addressInput.setValue('address');
-    await wrapper.find('form').trigger('submit');
+      const nameInput = wrapper.findAllComponents({ name: 'BaseInput' })[0];
+      const addressInput = wrapper.findAllComponents({ name: 'BaseInput' })[1];
+      const menuSearch = wrapper.findComponent({ name: 'BaseSearch' });
 
-    expect(wrapper.emitted('submit')).toBeTruthy();
-  });
+      await nameInput.setValue(name);
+      await addressInput.setValue(address);
+      await menuSearch.setValue(menu);
+      await wrapper.find('form').trigger('submit');
+
+      expect(Object.keys(wrapper.emitted()).length).toBe(submitEmitValue);
+    }
+  );
 
   it('calls store addBurger action', async () => {
-    const nameInput = wrapper.findAllComponents({ name: 'BaseInput' })[0].get('input');
-    const addressInput = wrapper.findAllComponents({ name: 'BaseInput' })[1].get('input');
+    const nameInput = wrapper.findAllComponents({ name: 'BaseInput' })[0];
+    const addressInput = wrapper.findAllComponents({ name: 'BaseInput' })[1];
 
     await nameInput.setValue('Name');
     await addressInput.setValue('address');
     await wrapper.find('form').trigger('submit');
 
-    expect(store.addRestaurant).toHaveBeenCalledWith({
+    expect(restaurantStore.addRestaurant).toHaveBeenCalledWith({
       name: 'Name',
       address: 'address',
       menu: [],
