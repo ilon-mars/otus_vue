@@ -42,13 +42,13 @@ const emit = defineEmits<{
   (e: 'deleteItem'): void;
 }>();
 
-const burgersStore = useBurgerStore();
+const store = useBurgerStore();
 
 const route = useRoute();
 const router = useRouter();
 
-const { burgers } = storeToRefs(burgersStore);
-const removeBurger = burgersStore.deleteBurger;
+const { burgers } = storeToRefs(store);
+const removeBurger = store.deleteBurger;
 
 const burger = computed(() => burgers.value.find(burger => burger._id === route.params.id));
 
