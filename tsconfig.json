@@ -3,7 +3,7 @@
     "env.d.ts",
     "src/**/*",
     "src/**/*.vue"
-  ],
+, "e2e"  ],
   "compilerOptions": {
     "target": "es5",
     "downlevelIteration": true,
