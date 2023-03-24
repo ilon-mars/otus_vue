@@ -14,14 +14,14 @@
 
         <div v-else>
           Знаете, что тут готовят?
-          <button @click="emit('openModal', Resources.BURGERS)" class="add-button">
+          <button @click="emit('openModal', ResourceEnum.BURGERS)" class="add-button">
             Добавьте бургер
           </button>
         </div>
       </li>
 
       <li :class="$style.restaurantTemplate">
-        <button class="h2" @click="emit('openModal', Resources.RESTAURANTS)">
+        <button class="h2" @click="emit('openModal', ResourceEnum.RESTAURANTS)">
           Добавить ресторан
         </button>
       </li>
@@ -29,7 +29,8 @@
 
     <h2 v-else class="h2">
       Нет доступных ресторанов, хотите
-      <button class="add-button" @click="emit('openModal', Resources.RESTAURANTS)">добавить</button
+      <button class="add-button" @click="emit('openModal', ResourceEnum.RESTAURANTS)">
+        добавить</button
       >?
     </h2>
   </section>
@@ -37,7 +38,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 import { useRestaurantStore } from '@/stores/restaurants';
 
 const restaurantsStore = useRestaurantStore();

@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { useStorage } from '@vueuse/core';
 import type { Burger } from '@/types/items';
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 import useApi from '@/hooks/useApi';
 import { generateId } from '@/utils/helpers';
 
-const api = useApi(Resources.BURGERS);
+const api = useApi(ResourceEnum.BURGERS);
 
 export const useBurgerStore = defineStore('burgers', {
   state: () => ({ burgers: useStorage('burgers', [] as Burger[]) }),

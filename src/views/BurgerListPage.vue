@@ -36,13 +36,13 @@
           src="https://media.istockphoto.com/id/1175023475/photo/blank-black-opened-burger-box-mockup-isolated-on-dark-background.jpg?s=170667a&w=0&k=20&c=SKlX6GTprVigPGjWNOHUsVrjk4k4VqdGqZR1amAOLIs="
           alt="empty box"
         />
-        <button class="h2" @click="emit('openModal', Resources.BURGERS)">Добавить бургер</button>
+        <button class="h2" @click="emit('openModal', ResourceEnum.BURGERS)">Добавить бургер</button>
       </li>
     </ul>
 
     <h2 v-else class="h2">
       Список бургеров пуст. Хотите
-      <button class="add-button" @click="emit('openModal', Resources.BURGERS)">добавить</button>?
+      <button class="add-button" @click="emit('openModal', ResourceEnum.BURGERS)">добавить</button>?
     </h2>
   </section>
 </template>
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import { useBurgerStore } from '@/stores/burgers';
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 import burgerTemplateImg from '@/assets/img/burgerTemplateImg.png';
 
 const burgersStore = useBurgerStore();

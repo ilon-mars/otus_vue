@@ -15,8 +15,8 @@
     <ul :class="$style.list" v-show="isSearchVisible">
       <li
         v-for="elem in filteredList"
-        :key="elem"
-        @click="addToMenu(elem.name)"
+        :key="elem.name"
+        @click="addToFinalList(elem.name)"
         :class="$style.item"
       >
         {{ elem.name }}
@@ -27,10 +27,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import type { SearchParam } from '@/types/baseSearchParams';
 
 const props = defineProps<{
   modelValue: string[];
-  fullData: any[];
+  fullData: SearchParam[];
 }>();
 
 const emit = defineEmits<{
@@ -38,7 +39,7 @@ const emit = defineEmits<{
 }>();
 
 const input = ref('');
-const menu = ref(new Set<string>());
+const finalList = ref(new Set<string>());
 
 const filteredList = computed(() =>
   props.fullData.filter(item => item.name.toLowerCase().includes(input.value.toLowerCase()))
@@ -46,14 +47,14 @@ const filteredList = computed(() =>
 
 const onInput = (currentValue: string) => {
   input.value = currentValue;
-  emit('update:modelValue', [...menu.value]);
+  emit('update:modelValue', [...finalList.value]);
 };
 
-const addToMenu = (name: string) => {
-  menu.value.add(name);
+const addToFinalList = (name: string) => {
+  finalList.value.add(name);
   isSearchVisible.value = false;
   input.value = '';
-  emit('update:modelValue', [...menu.value]);
+  emit('update:modelValue', [...finalList.value]);
 };
 
 const isSearchVisible = ref(false);

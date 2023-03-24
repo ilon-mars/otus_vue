@@ -1,16 +1,19 @@
 <template>
   <header :class="$style.header">
     <nav :class="$style.nav" class="wrapper">
-      <router-link :class="$style.link" :to="{ name: Resources.BURGERS }">Бургеры</router-link>
-      <router-link :class="$style.link" :to="{ name: Resources.RESTAURANTS }"
-        >Рестораны</router-link
+      <router-link
+        v-for="link of ResourceEnum.values"
+        :key="link"
+        :class="$style.link"
+        :to="{ name: link }"
+        >{{ ResourceEnum.linkNames[link] }}</router-link
       >
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 </script>
 
 <style lang="sass" module>

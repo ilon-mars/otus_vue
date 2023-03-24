@@ -15,7 +15,6 @@
       <ul v-if="burger.restaurants">
         <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
           {{ item }}
-          {{ item }}
         </li>
       </ul>
       <div v-else>Знаете ресторан, где готовят этот бургер? <button>Добавьте его</button></div>
@@ -25,7 +24,7 @@
 
   <div v-else>
     Кажется, произошла ошибка,
-    <router-link :to="{ name: Resources.BURGERS }" :class="$style.goBack"
+    <router-link :to="{ name: ResourceEnum.BURGERS }" :class="$style.goBack"
       >вернуться на главную</router-link
     >?
   </div>
@@ -36,27 +35,27 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useBurgerStore } from '@/stores/burgers';
-import { Resources } from '@/enums/resources';
+import { ResourceEnum } from '@/enums/resources';
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
   (e: 'deleteItem'): void;
 }>();
 
-const burgersStore = useBurgerStore();
+const store = useBurgerStore();
 
 const route = useRoute();
 const router = useRouter();
 
-const { burgers } = storeToRefs(burgersStore);
-const removeBurger = burgersStore.deleteBurger;
+const { burgers } = storeToRefs(store);
+const removeBurger = store.deleteBurger;
 
 const burger = computed(() => burgers.value.find(burger => burger._id === route.params.id));
 
 const deleteBurger = async (burgerId: string) => {
   await removeBurger(burgerId);
   emit('deleteItem');
-  router.push({ name: Resources.BURGERS });
+  router.push({ name: ResourceEnum.BURGERS });
 };
 </script>
 
