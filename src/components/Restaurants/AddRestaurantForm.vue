@@ -27,43 +27,38 @@ export default {
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRestaurantStore } from '@/stores/restaurants';
+import { useBurgerStore } from '@/stores/burgers';
 import BaseInput from '@/components/common/BaseInput.vue';
-import type { Burger, Restaurant } from '@/types/items';
-import useApi from '@/hooks/useApi';
-import { Resources } from '@/enums/resources';
-import type { Item } from '@/types/responseData';
+import type { Restaurant } from '@/types/items';
 import BaseSearch from '@/components/common/BaseSearch.vue';
-
-const props = defineProps<{
-  restaurants: Restaurant[];
-  burgers: Burger[];
-}>();
 
 const emit = defineEmits<{
   (e: 'submit'): void;
 }>();
 
+const restaurantsStore = useRestaurantStore();
+const burgers = useBurgerStore().burgers;
+
 const restaurantName = ref('');
 const restaurantAddress = ref('');
 const menu = ref([] as string[]);
-
-const addRestaurant = await useApi(Resources.RESTAURANTS);
 
 const onSubmit = async () => {
   if (
     !restaurantName.value ||
     !restaurantAddress.value ||
-    (menu.value.length === 0 && props.burgers.length)
+    (menu.value.length === 0 && burgers.length)
   ) {
     return;
   }
-  const restaurant: Item = {
+  const restaurant: Restaurant = {
     name: restaurantName.value,
     address: restaurantAddress.value,
     menu: menu.value,
   };
 
-  await addRestaurant.$api.post(restaurant);
+  await restaurantsStore.addRestaurant(restaurant);
 
   restaurantName.value = '';
   restaurantAddress.value = '';

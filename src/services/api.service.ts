@@ -1,8 +1,9 @@
-import axios from '@/plugins/axios';
 import type { AxiosRequestConfig } from 'axios';
-import type { Item } from '@/types/responseData';
-import data from '@/store';
-import { generateId } from '@/utils/helpers';
+import type { Burger, Restaurant } from '@/types/items';
+import { query, addItem, updateItem, removeItem } from '@/store';
+
+export type AllData = Burger[] | Restaurant[];
+export type Item = Burger | Restaurant;
 
 class BaseApiService {}
 
@@ -15,14 +16,13 @@ export class ReadOnlyApiService extends BaseApiService {
   }
 
   async query(config: AxiosRequestConfig | {} = {}) {
-    const { data } = await axios.get(this.#resource, config);
-    return data;
+    return query(this.#resource, config);
   }
 
-  async get(id: string, config: AxiosRequestConfig | {} = {}) {
-    const { data } = await axios.get(`${this.#resource}/${id}`, config);
-    return data;
-  }
+  // async get(id: string, config: AxiosRequestConfig | {} = {}) {
+  // const { data } = await axios.get(`${this.#resource}/${id}`, config);
+  // return data;
+  // }
 }
 
 export class CrudApiService extends ReadOnlyApiService {
@@ -34,21 +34,14 @@ export class CrudApiService extends ReadOnlyApiService {
   }
 
   async post(item: Item) {
-    (data as any)[this.#resource].push({ ...item, _id: generateId() });
-    return data;
+    return await addItem(item, this.#resource);
   }
 
   async put(editedItem: Item) {
-    const itemIndex = (data as any)[this.#resource].findIndex(
-      (item: Item) => item._id === editedItem._id
-    );
-    (data as any)[this.#resource].splice(itemIndex, 1, editedItem);
-    return data;
+    return updateItem(editedItem, this.#resource);
   }
 
   async delete(id: string) {
-    const itemIndex = (data as any)[this.#resource].findIndex((item: Item) => item._id === id);
-    (data as any)[this.#resource].splice(itemIndex, 1);
-    return data;
+    return removeItem(id, this.#resource);
   }
 }
