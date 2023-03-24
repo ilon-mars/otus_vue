@@ -5,8 +5,6 @@
     <router-view v-slot="{ Component, route }">
       <Transition name="slide">
         <component
-          :burgers="data.burgers"
-          :restaurants="data.restaurants"
           :is="Component"
           :key="route.fullPath"
           @openModal="openModal($event)"
@@ -19,8 +17,6 @@
   <AppModal :isOpen="isModalOpen" @close="closeModal">
     <component
       :is="modalType === Resources.BURGERS ? AddBurgerForm : AddRestaurantForm"
-      :restaurants="data.restaurants"
-      :burgers="data.burgers"
       @submit="submitForm"
     />
   </AppModal>
@@ -28,20 +24,18 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { RouterView } from 'vue-router';
+import AppHeader from '@/components/AppHeader.vue';
 import AddBurgerForm from '@/components/Burgers/AddBurgerForm.vue';
 import AddRestaurantForm from '@/components/Restaurants/AddRestaurantForm.vue';
 import AppModal from '@/components/AppModal.vue';
-import useApi from '@/hooks/useApi';
+import { useBurgerStore } from '@/stores/burgers';
 import { Resources } from '@/enums/resources';
-import AppHeader from '@/components/AppHeader.vue';
-import data from '@/store';
-import { RouterView } from 'vue-router';
 
-const burgersApi = await useApi(Resources.BURGERS);
-const restaurantsApi = await useApi(Resources.RESTAURANTS);
+const burgersStore = useBurgerStore();
 
-data.burgers = await burgersApi.$api.query();
-data.restaurants = await restaurantsApi.$api.query();
+// await restaurantsStore.loadRestaurants();
+await burgersStore.loadBurgers();
 
 const isModalOpen = ref(false);
 const modalType = ref(Resources.BURGERS as string);

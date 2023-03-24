@@ -12,7 +12,7 @@
       </li>
     </ul>
 
-    <BaseSelect :options="options" v-model="burgerPlace" :class="$style.select" multiple
+    <BaseSelect :options="restaurantList" v-model="burgerPlace" :class="$style.select" multiple
       >Где его готовят</BaseSelect
     >
 
@@ -29,47 +29,46 @@ export default {
 
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { useRestaurantStore } from '@/stores/restaurants';
+import { useBurgerStore } from '@/stores/burgers';
 import BaseInput from '@/components/common/BaseInput.vue';
 import BaseCheckbox from '@/components/common/BaseCheckbox.vue';
 import BaseSelect from '@/components/common/BaseSelect.vue';
 import Ingredients from '@/enums/ingredients';
-import type { Burger, Restaurant } from '@/types/items';
-import useApi from '@/hooks/useApi';
-import { Resources } from '@/enums/resources';
-
-const props = defineProps<{
-  restaurants: Restaurant[];
-  burgers: Burger[];
-}>();
+import type { Burger } from '@/types/items';
 
 const emit = defineEmits<{
   (e: 'submit'): void;
 }>();
+
+const restaurants = useRestaurantStore().restaurants;
+const burgersStore = useBurgerStore();
 
 const burgerName = ref('');
 const burgerImgUrl = ref('');
 const burgerIngredients = ref([Ingredients.BUN]);
 const burgerPlace = ref<Array<string>>([]);
 
-const addBurger = await useApi(Resources.BURGERS);
-
-const options = computed(() => props.restaurants.map(item => item.name));
+const restaurantList = computed(() => restaurants.map(item => item.name));
 
 const onSubmit = async () => {
   const ingredients = Object.values(burgerIngredients.value);
 
-  if (!burgerName.value || ingredients.length === 0 || !burgerPlace.value) {
-    return;
+  if (
+    !burgerName.value ||
+    !burgerImgUrl.value ||
+    ingredients.length === 0 ||
+    (!burgerPlace.value && restaurants.length)
+  ) {
+    const burger: Burger = {
+      name: burgerName.value,
+      image: burgerImgUrl.value,
+      ingredients: ingredients,
+      restaurants: [...burgerPlace.value],
+    };
+
+    await burgersStore.addBurger(burger);
   }
-
-  const burger: Burger = {
-    name: burgerName.value,
-    image: burgerImgUrl.value,
-    ingredients: ingredients,
-    restaurants: [...burgerPlace.value],
-  };
-
-  await addBurger.$api.post(burger);
 
   burgerName.value = '';
   burgerImgUrl.value = '';

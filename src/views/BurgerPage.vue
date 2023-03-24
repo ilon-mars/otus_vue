@@ -15,6 +15,7 @@
       <ul v-if="burger.restaurants">
         <li v-for="item in burger.restaurants" :key="item" :class="$style.item">
           {{ item }}
+          {{ item }}
         </li>
       </ul>
       <div v-else>Знаете ресторан, где готовят этот бургер? <button>Добавьте его</button></div>
@@ -33,23 +34,27 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { storeToRefs } from 'pinia';
+import { useBurgerStore } from '@/stores/burgers';
 import { Resources } from '@/enums/resources';
-import useApi from '@/hooks/useApi';
-import data from '@/store';
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
   (e: 'deleteItem'): void;
 }>();
 
+const burgersStore = useBurgerStore();
+
 const route = useRoute();
 const router = useRouter();
-const burger = computed(() => data.burgers.find(burger => burger._id === route.params.id));
 
-const deleteApi = await useApi(Resources.BURGERS);
+const { burgers } = storeToRefs(burgersStore);
+const removeBurger = burgersStore.deleteBurger;
+
+const burger = computed(() => burgers.value.find(burger => burger._id === route.params.id));
 
 const deleteBurger = async (burgerId: string) => {
-  await deleteApi.$api.delete(burgerId);
+  await removeBurger(burgerId);
   emit('deleteItem');
   router.push({ name: Resources.BURGERS });
 };

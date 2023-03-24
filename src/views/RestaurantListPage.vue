@@ -36,13 +36,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Burger, Restaurant } from '@/types/items';
+import { storeToRefs } from 'pinia';
 import { Resources } from '@/enums/resources';
+import { useRestaurantStore } from '@/stores/restaurants';
 
-defineProps<{
-  burgers: Burger[];
-  restaurants: Restaurant[];
-}>();
+const restaurantsStore = useRestaurantStore();
+const { restaurants } = storeToRefs(restaurantsStore);
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;

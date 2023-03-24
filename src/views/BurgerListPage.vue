@@ -48,14 +48,14 @@
 </template>
 
 <script setup lang="ts">
-import type { Burger, Restaurant } from '@/types/items';
+import { storeToRefs } from 'pinia';
+import { useBurgerStore } from '@/stores/burgers';
 import { Resources } from '@/enums/resources';
 import burgerTemplateImg from '@/assets/img/burgerTemplateImg.png';
 
-defineProps<{
-  burgers: Burger[];
-  restaurants: Restaurant[];
-}>();
+const burgersStore = useBurgerStore();
+
+const { burgers } = storeToRefs(burgersStore);
 
 const emit = defineEmits<{
   (e: 'openModal', modalType: string): void;
