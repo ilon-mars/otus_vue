@@ -1,16 +1,19 @@
 import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
+import { BURGERS } from '@/utils/testDataMocks';
 
 let wrapper: VueWrapper;
+
+const burgerMock = BURGERS[1];
 
 const push = vi.fn();
 const useRouterFunc = vi.fn().mockImplementation(() => ({
   push,
 }));
-const useRouteFunc = vi.fn().mockImplementationOnce(() => ({
+const useRouteFunc = vi.fn().mockImplementation(() => ({
   params: {
-    id: '1',
+    id: burgerMock._id,
   },
 }));
 
@@ -24,7 +27,6 @@ vi.mock('vue-router', () => ({
 import router from '@/router';
 import BurgerPage from '@/views/BurgerPage.vue';
 import { useBurgerStore } from '@/stores/burgers';
-import { BURGERS } from '@/utils/testDataMocks';
 
 const pinia = createTestingPinia({ createSpy: vi.fn });
 const store = useBurgerStore(pinia);
@@ -47,39 +49,16 @@ describe('BurgerPage', () => {
     store.burgers = [];
   });
 
-  it("shows link to main page, when burger doesn't exist", () => {
-    expect(wrapper.html()).toContain('Кажется, произошла ошибка');
+  it('renders burger page', () => {
+    expect(wrapper.find('.title').text()).toEqual(burgerMock.name);
+    expect(wrapper.find('.img').attributes().src).toEqual(burgerMock.image);
+    expect(wrapper.find('.list').html()).toContain(burgerMock.ingredients[0]);
+    expect(wrapper.find('.restaurants').html()).toContain(burgerMock.restaurants[0]);
   });
 
-  // ! не работает
-  // it.only('renders page, when burger exist', async () => {
-  //   useRouteFunc.withImplementation(
-  //     () => ({
-  //       params: {
-  //         id: 'b1',
-  //       },
-  //     }),
-  //     () => {
-  //       useRouteFunc();
-  //     }
-  //   );
-
-  //   await flushPromises();
-
-  //   console.log(wrapper.html());
-  // });
-
-  // ! не работает
-  // it.only('renders page, when burger exist', async () => {
-  //   useRouteFunc.mockImplementationOnce(() => ({
-  //     params: {
-  //       id: 'b1',
-  //     },
-  //   }));
-  //   await flushPromises();
-
-  //   console.log(wrapper.html());
-  // });
+  it("shows link to main page, when burger doesn't exist", async () => {
+    store.burgers = [];
+    await flushPromises();
+    expect(wrapper.html()).toContain('Кажется, произошла ошибка');
+  });
 });
-
-// console.log(useRouteFunc.mock.results[0].value);
