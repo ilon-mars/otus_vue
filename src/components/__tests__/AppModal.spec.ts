@@ -2,6 +2,7 @@ import { mount, VueWrapper } from '@vue/test-utils';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { defineComponent, ref } from 'vue';
 import AppModal from '@/components/AppModal.vue';
+import CloseIcon from '@/components/icons/CloseIcon.vue';
 
 let wrapper: VueWrapper;
 let destination: HTMLDivElement;
@@ -50,5 +51,13 @@ describe('AppModal', () => {
     await wrapper.find('#openBtn').trigger('click');
 
     expect(document.body.outerHTML).toContain('<div class="modal">');
+  });
+
+  it('closes after click', async () => {
+    wrapper = mount(AppModal, { props: { isOpen: true } });
+
+    const closeButton = wrapper.getComponent(CloseIcon);
+    await closeButton.trigger('click');
+    expect(wrapper.emitted('close')).toBeTruthy();
   });
 });
