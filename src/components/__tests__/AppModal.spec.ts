@@ -7,6 +7,12 @@ import CloseIcon from '@/components/icons/CloseIcon.vue';
 let wrapper: VueWrapper;
 let destination: HTMLDivElement;
 
+const closeCheck = {
+  params: {
+    props: { isOpen: true },
+  },
+};
+
 // вариант такого тестирования взят отсюда: https://github.com/vuejs/test-utils/issues/798#issuecomment-902335440
 beforeEach(() => {
   // @ts-ignore
@@ -54,7 +60,7 @@ describe('AppModal', () => {
   });
 
   it('closes after click', async () => {
-    wrapper = mount(AppModal, { props: { isOpen: true } });
+    wrapper = mount(AppModal, closeCheck.params);
 
     const closeButton = wrapper.getComponent(CloseIcon);
     await closeButton.trigger('click');
