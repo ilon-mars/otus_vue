@@ -17,6 +17,7 @@ TODO
 
 /cypress/videos/
 /cypress/screenshots/
+/playwright-report/
 
 # Editor directories and files
 .vscode

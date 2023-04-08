@@ -1,26 +1,40 @@
-import { mount, VueWrapper } from '@vue/test-utils';
+import { flushPromises, mount, VueWrapper } from '@vue/test-utils';
 import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
 import { createTestingPinia } from '@pinia/testing';
-import { useRouter, useRoute } from 'vue-router';
-import router from '@/router';
-import BurgerPage from '@/views/BurgerPage.vue';
-import { useBurgerStore } from '@/stores/burgers';
+import { BURGERS } from '@/utils/testDataMocks';
 
 let wrapper: VueWrapper;
 
-vi.mock('vue-router', () => ({
-  useRoute: vi.fn(),
-  useRouter: vi.fn(() => ({
-    push: () => {},
-  })),
+const burgerMock = BURGERS[1];
+
+const push = vi.fn();
+const useRouterFunc = vi.fn().mockImplementation(() => ({
+  push,
 }));
+const useRouteFunc = vi.fn().mockImplementation(() => ({
+  params: {
+    id: burgerMock._id,
+  },
+}));
+
+vi.mock('vue-router', () => ({
+  createRouter: vi.fn().mockReturnValue({}),
+  createWebHistory: vi.fn(),
+  useRoute: useRouteFunc,
+  useRouter: useRouterFunc,
+}));
+
+import router from '@/router';
+import BurgerPage from '@/views/BurgerPage.vue';
+import { useBurgerStore } from '@/stores/burgers';
 
 const pinia = createTestingPinia({ createSpy: vi.fn });
 const store = useBurgerStore(pinia);
 
 const mountOptions = {
+  plugins: [pinia, router],
+
   global: {
-    plugins: [pinia, router],
     stubs: ['router-link'],
   },
 };
@@ -28,45 +42,23 @@ const mountOptions = {
 describe('BurgerPage', () => {
   beforeEach(() => {
     wrapper = mount(BurgerPage, mountOptions);
+    store.burgers = BURGERS;
   });
 
   afterEach(() => {
     store.burgers = [];
   });
 
-  // Property 'mockImplementationOnce' does not exist on type '() => RouteLocationNormalizedLoaded'.ts(2339)
-  it("shows link to main page, when burger doesn't exist", () => {
-    useRoute.mockImplementationOnce(() => ({
-      params: {
-        id: '1',
-      },
-    }));
-    // Property 'mockImplementationOnce' does not exist on type '() => Router'.ts(2339)
-    const push = vi.fn();
-    useRouter.mockImplementationOnce(() => ({
-      push,
-    }));
-    console.log(wrapper.html());
+  it('renders burger page', () => {
+    expect(wrapper.find('.title').text()).toEqual(burgerMock.name);
+    expect(wrapper.find('.img').attributes().src).toEqual(burgerMock.image);
+    expect(wrapper.find('.list').html()).toContain(burgerMock.ingredients[0]);
+    expect(wrapper.find('.restaurants').html()).toContain(burgerMock.restaurants[0]);
+  });
+
+  it("shows link to main page, when burger doesn't exist", async () => {
+    store.burgers = [];
+    await flushPromises();
+    expect(wrapper.html()).toContain('Кажется, произошла ошибка');
   });
 });
-
-/*
-Error: [vitest] No "createRouter" export is defined on the "vue-router" mock. Did you forget to return it from "vi.mock"?
-If you need to partially mock a module, you can use "vi.importActual" inside:
-
-vi.mock("vue-router", async () => {
-  const actual = await vi.importActual("vue-router")
-  return {
-    ...actual,
-    // your mocked methods
-  },
-})
-
-❯ src/router/index.ts:6:16
-      4| import { useRestaurantStore } from '@/stores/restaurants';
-      5|
-      6| const router = createRouter({
-       |                ^
-      7|   history: createWebHistory(),
-      8|   routes: [
-*/
