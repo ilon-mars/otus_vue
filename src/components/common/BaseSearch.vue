@@ -8,7 +8,7 @@
         :class="$style.input"
         :value="input"
         @input="onInput(($event.target as HTMLInputElement).value)"
-        @focus="isSearchVisible = true"
+        @focus="$emit('focus')"
       />
     </label>
 
@@ -32,10 +32,13 @@ import type { SearchParam } from '@/types/baseSearchParams';
 const props = defineProps<{
   modelValue: string[];
   fullData: SearchParam[];
+  isSearchVisible: boolean;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string[]): void;
+  (e: 'focus'): void;
+  (e: 'closeSearch'): void;
 }>();
 
 const input = ref('');
@@ -52,12 +55,10 @@ const onInput = (currentValue: string) => {
 
 const addToFinalList = (name: string) => {
   finalList.value.add(name);
-  isSearchVisible.value = false;
   input.value = '';
+  emit('closeSearch');
   emit('update:modelValue', [...finalList.value]);
 };
-
-const isSearchVisible = ref(false);
 </script>
 
 <style module lang="sass">

@@ -1,21 +1,25 @@
 <template>
-  <h2 class="h2" :class="$style.title">Добавить ресторан</h2>
-  <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
-  <form @submit.prevent="onSubmit" :class="$style.form">
-    <BaseInput v-model="restaurantName" :class="$style.input">Название</BaseInput>
-
-    <BaseInput v-model="restaurantAddress" :class="$style.input">Адрес заведения</BaseInput>
-
-    <BaseSearch v-model="menu" :class="$style.search" :fullData="burgers"
-      >Добавьте бургеры, которые здесь готовят</BaseSearch
-    >
-
-    <ul :class="$style.menu" v-if="menu.length">
-      <li v-for="item in menu" :key="item" :class="$style.item">{{ item }}</li>
-    </ul>
-
-    <button type="submit" :class="$style.addBtn">Добавить</button>
-  </form>
+  <div @click="closeSearch" @touchend="closeSearch">
+    <h2 class="h2" :class="$style.title">Добавить ресторан</h2>
+    <span :class="$style.tip">Все поля являются обязательными к заполнению</span>
+    <form @submit.prevent="onSubmit" :class="$style.form">
+      <BaseInput v-model="restaurantName" :class="$style.input">Название</BaseInput>
+      <BaseInput v-model="restaurantAddress" :class="$style.input">Адрес заведения</BaseInput>
+      <BaseSearch
+        v-model="menu"
+        :class="$style.search"
+        :fullData="burgers"
+        :isSearchVisible="isSearchVisible"
+        @focus="isSearchVisible = true"
+        @closeSearch="isSearchVisible = false"
+        >Добавьте бургеры, которые здесь готовят</BaseSearch
+      >
+      <ul :class="$style.menu" v-if="menu.length">
+        <li v-for="item in menu" :key="item" :class="$style.item">{{ item }}</li>
+      </ul>
+      <button type="submit" :class="$style.addBtn">Добавить</button>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -64,6 +68,15 @@ const onSubmit = async () => {
   restaurantAddress.value = '';
   menu.value = [];
   emit('submit');
+};
+
+const isSearchVisible = ref(false);
+
+const closeSearch = (e: TouchEvent | MouseEvent) => {
+  if (e.target && e.target instanceof HTMLElement) {
+    if (!(e.target.closest('ul') || e.target.closest('input[type="search"]')))
+      isSearchVisible.value = false;
+  }
 };
 </script>
 
